@@ -1,6 +1,10 @@
 # Hello World App
 
-Una aplicación Flutter simple para practicar el uso de widgets, estado y lógica de contador.
+## Diagrama
+
+- [Enlace al diagrama](https://devfntxy.github.io/diagramweb/)
+
+Este diagrama fue creado con Archify para ofrecer una mejor comprensión del sistema de Flutter, la estructura del proyecto y cómo interactúan sus componentes dentro de la aplicación.
 
 ## Descripción
 
@@ -87,19 +91,4 @@ flutter run
 ### Botón de reinicio
 
 ![Botón de reinicio](./assets/botonReicio.png)
-
-## Diagrama del proyecto
-
-Puedes consultar el diagrama del proyecto y su contexto visual en la siguiente ruta:
-
-- [Diagrama interactivo](./diagrams/counter_context_diagram.html)
-
-## Sitio del diagrama
-
-Agrega aquí el enlace del sitio o despliegue del diagrama, por ejemplo:
-
-```text
-https://tu-sitio.com/diagrama-counter-app
-```
-
 
