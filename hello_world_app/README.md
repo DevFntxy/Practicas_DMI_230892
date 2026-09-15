@@ -1,17 +1,87 @@
-# hello_world_app
+# Hello World App
 
-A new Flutter project.
+Una aplicación Flutter simple para practicar el uso de widgets, estado y lógica de contador.
 
-## Getting Started
+## Descripción
 
-This project is a starting point for a Flutter application.
+Este proyecto representa una app base de Flutter con una pantalla principal donde el usuario puede:
 
-A few resources to get you started if this is your first Flutter project:
+- incrementar el contador
+- reiniciarlo a cero
+- disminuir el valor
+- observar cambios de color según el estado del número
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+La aplicación sirve como ejemplo de estructura básica de Flutter, organización por carpetas y manejo de estado con `setState()`.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tecnologías
+
+- Flutter
+- Dart
+- Material Design
+
+## Estructura del proyecto
+
+```text
+hello_world_app/
+├── android/            # configuración de Android
+├── ios/                # configuración de iOS
+├── lib/                # código fuente principal
+│   ├── main.dart
+│   └── presentation/
+│       └── screens/
+│           └── counter/
+│               ├── counter_screen.dart
+│               └── counter_functions_screen.dart
+├── test/               # pruebas
+├── web/                # configuración web
+├── windows/            # configuración Windows
+├── linux/              # configuración Linux
+├── macos/              # configuración macOS
+├── analysis_options.yaml
+├── pubspec.yaml
+├── README.md
+└── ...
+```
+
+## Requisitos
+
+- Flutter SDK instalado
+- Editor compatible: VS Code o Android Studio
+- Dispositivo emulador o dispositivo físico
+
+## Instalación y ejecución
+
+1. Clona el proyecto o entra a la carpeta.
+2. Asegúrate de tener Flutter instalado y configurado.
+3. Ejecuta:
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Funcionalidades principales
+
+- contador con valor inicial en cero
+- botones para sumar, restablecer y restar
+- cambio de color del número:
+  - positivo: verde
+  - negativo: rojo
+  - cero: azul
+- interfaz organizada por componentes y pantallas
+
+## Diagrama del proyecto
+
+Puedes consultar el diagrama del proyecto y su contexto visual en la siguiente ruta:
+
+- [Diagrama interactivo](./diagrams/counter_context_diagram.html)
+
+## Sitio del diagrama
+
+Agrega aquí el enlace del sitio o despliegue del diagrama, por ejemplo:
+
+```text
+https://tu-sitio.com/diagrama-counter-app
+```
+
+
