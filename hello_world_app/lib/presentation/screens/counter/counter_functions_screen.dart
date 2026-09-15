@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CounterFunctionsScreen extends StatefulWidget {
   const CounterFunctionsScreen({super.key});
@@ -39,15 +40,15 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
           children: [
             Text(
               '$clickCounter',
-              style: TextStyle(
+              style: GoogleFonts.orbitron(
                 fontSize: 160,
                 fontWeight: FontWeight.w100,
                 color: counterColor,
               ),
             ),
             Text(
-              'Click${clickCounter == 1 ? '' : 's'}',
-              style: const TextStyle(fontSize: 25),
+              'Click${clickCounter == 0 ? '' : 's'}',
+              style: GoogleFonts.orbitron(fontSize: 25),
             ),
           ],
         ),

@@ -70,6 +70,24 @@ flutter run
   - cero: azul
 - interfaz organizada por componentes y pantallas
 
+## Capturas de la práctica
+
+### Estado inicial (valor en cero)
+
+![Contador en cero](./assets/contador0.png)
+
+### Contador en valor positivo
+
+![Contador positivo](./assets/contadorVerde.png)
+
+### Contador en valor negativo
+
+![Contador negativo](./assets/contadorRojo.png)
+
+### Botón de reinicio
+
+![Botón de reinicio](./assets/botonReicio.png)
+
 ## Diagrama del proyecto
 
 Puedes consultar el diagrama del proyecto y su contexto visual en la siguiente ruta:
