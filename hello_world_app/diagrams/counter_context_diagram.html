@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contexto completo de hello_world_app</title>
+    <style>
+      :root {
+        --bg1: #eef6ff;
+        --bg2: #f8fafc;
+        --panel: rgba(255,255,255,0.9);
+        --text: #0f172a;
+        --muted: #475569;
+        --border: rgba(148,163,184,0.4);
+        --primary: #2563eb;
+        --primary-soft: #dbeafe;
+        --green: #22c55e;
+        --red: #ef4444;
+        --blue: #3b82f6;
+        --yellow: #facc15;
+        --purple: #8b5cf6;
+        --orange: #fb923c;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(37,99,235,0.12), transparent 20%),
+          radial-gradient(circle at bottom right, rgba(168,85,247,0.12), transparent 26%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+      }
+
+      body {
+        padding: 22px;
+      }
+
+      .layout {
+        max-width: 1500px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 330px minmax(0, 1fr);
+        gap: 22px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(15,23,42,0.08);
+      }
+
+      .sidebar {
+        padding: 22px 18px;
+      }
+
+      .badge {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--primary-soft), rgba(255,255,255,0.75));
+        color: var(--primary);
+        border: 1px solid rgba(37,99,235,0.25);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-weight:700;
+        font-size: 0.78rem;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(1.9rem, 2vw, 2.5rem);
+        letter-spacing: -0.04em;
+      }
+
+      .subtitle {
+        margin: 0 0 18px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .node-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .node {
+        background: rgba(255,255,255,0.8);
+        border: 1px solid var(--border);
+        border-left: 6px solid var(--primary);
+        border-radius: 16px;
+        padding: 12px 14px;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .node:hover,
+      .node.active {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(37,99,235,0.12);
+      }
+
+      .node strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .node span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .main {
+        padding: 18px;
+      }
+
+      .chart-shell {
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: rgba(255,255,255,0.72);
+        padding: 12px;
+        overflow: auto;
+      }
+
+      svg {
+        width: 100%;
+        min-width: 1100px;
+        height: auto;
+        display: block;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,255,255,0.8);
+        border: 1px solid var(--border);
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .green { background: var(--green); }
+      .red { background: var(--red); }
+      .blue { background: var(--blue); }
+      .yellow { background: var(--yellow); }
+      .orange { background: var(--orange); }
+      .purple { background: var(--purple); }
+
+      .detail-card {
+        margin-top: 18px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(219,234,254,0.25));
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .detail-card h2 {
+        margin: 0 0 8px;
+        font-size: 1.08rem;
+      }
+
+      .detail-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 980px) {
+        .layout { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="panel sidebar">
+        <div class="badge">Proyecto completo</div>
+        <h1>hello_world_app</h1>
+        <p class="subtitle">
+          Contexto completo del proyecto: estructura de carpetas, punto de entrada, UI y lógica del contador.
+        </p>
+
+        <div class="node-list">
+          <div class="node active" data-target="root">
+            <strong>hello_world_app</strong>
+            <span>Proyecto Flutter</span>
+          </div>
+          <div class="node" data-target="lib">
+            <strong>lib/</strong>
+            <span>Código principal</span>
+          </div>
+          <div class="node" data-target="presentation">
+            <strong>presentation/</strong>
+            <span>Capa visual</span>
+          </div>
+          <div class="node" data-target="screens">
+            <strong>screens/</strong>
+            <span>Pantallas</span>
+          </div>
+          <div class="node" data-target="counter">
+            <strong>counter/</strong>
+            <span>Contador</span>
+          </div>
+          <div class="node" data-target="platforms">
+            <strong>android / ios / web / linux / windows / macos</strong>
+            <span>Plataformas</span>
+          </div>
+          <div class="node" data-target="test">
+            <strong>test/</strong>
+            <span>Pruebas</span>
+          </div>
+          <div class="node" data-target="build">
+            <strong>build/</strong>
+            <span>Salida compilada</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="panel main">
+        <div class="chart-shell">
+          <svg viewBox="0 0 1240 820" xmlns="http://www.w3.org/2000/svg" aria-label="Diagrama completo del contexto de hello_world_app">
+            <defs>
+              <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+              </marker>
+              <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="10" stdDeviation="12" flood-opacity="0.12"/>
+              </filter>
+            </defs>
+
+            <style>
+              .title { font: 700 26px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+              .subtitle { font: 600 15px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+              .label { font: 700 15px 'Segoe UI', Arial, sans-serif; fill: #111827; }
+              .small { font: 600 12px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+              .rootbox { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+              .lib { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; }
+              .ui { fill: #ede9fe; stroke: #8b5cf6; stroke-width: 2; }
+              .screen { fill: #fef3c7; stroke: #facc15; stroke-width: 2; }
+              .data { fill: #dcfce7; stroke: #22c55e; stroke-width: 2; }
+              .warn { fill: #fee2e2; stroke: #ef4444; stroke-width: 2; }
+              .platform { fill: #ffedd5; stroke: #fb923c; stroke-width: 2; }
+              .path { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+            </style>
+
+            <rect width="1240" height="820" fill="#f8fafc"/>
+            <text x="620" y="40" text-anchor="middle" class="title">Contexto completo de hello_world_app</text>
+            <text x="620" y="66" text-anchor="middle" class="subtitle">Estructura del proyecto, entorno, UI y flujo funcional</text>
+
+            <g filter="url(#shadow)">
+              <rect x="530" y="90" width="200" height="86" rx="18" class="rootbox"/>
+              <text x="630" y="128" text-anchor="middle" class="label">hello_world_app</text>
+              <text x="630" y="150" text-anchor="middle" class="small">Proyecto Flutter</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="100" y="220" width="220" height="104" rx="18" class="lib"/>
+              <text x="210" y="260" text-anchor="middle" class="label">lib/</text>
+              <text x="210" y="282" text-anchor="middle" class="small">Código fuente</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="410" y="220" width="220" height="104" rx="18" class="ui"/>
+              <text x="520" y="260" text-anchor="middle" class="label">presentation/</text>
+              <text x="520" y="282" text-anchor="middle" class="small">Capa visual</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="720" y="220" width="220" height="104" rx="18" class="screen"/>
+              <text x="830" y="260" text-anchor="middle" class="label">screens/</text>
+              <text x="830" y="282" text-anchor="middle" class="small">Pantallas</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="1030" y="220" width="120" height="104" rx="18" class="data"/>
+              <text x="1090" y="260" text-anchor="middle" class="label">test/</text>
+              <text x="1090" y="282" text-anchor="middle" class="small">Pruebas</text>
+            </g>
+
+            <path class="path" d="M530 134 H320"/>
+            <path class="path" d="M630 176 V220"/>
+            <path class="path" d="M730 134 H920"/>
+            <path class="path" d="M730 134 H1090"/>
+
+            <g filter="url(#shadow)">
+              <rect x="410" y="380" width="480" height="110" rx="20" class="screen"/>
+              <text x="650" y="420" text-anchor="middle" class="label">counter/</text>
+              <text x="650" y="444" text-anchor="middle" class="small">counter_screen.dart + counter_functions_screen.dart</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="100" y="560" width="170" height="120" rx="18" class="platform"/>
+              <text x="185" y="610" text-anchor="middle" class="label">android/</text>
+              <text x="185" y="634" text-anchor="middle" class="small">Android</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="300" y="560" width="170" height="120" rx="18" class="platform"/>
+              <text x="385" y="610" text-anchor="middle" class="label">ios/</text>
+              <text x="385" y="634" text-anchor="middle" class="small">iOS</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="500" y="560" width="170" height="120" rx="18" class="platform"/>
+              <text x="585" y="610" text-anchor="middle" class="label">web/</text>
+              <text x="585" y="634" text-anchor="middle" class="small">Web</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="700" y="560" width="170" height="120" rx="18" class="platform"/>
+              <text x="785" y="610" text-anchor="middle" class="label">linux/</text>
+              <text x="785" y="634" text-anchor="middle" class="small">Linux</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="900" y="560" width="170" height="120" rx="18" class="platform"/>
+              <text x="985" y="610" text-anchor="middle" class="label">windows/</text>
+              <text x="985" y="634" text-anchor="middle" class="small">Windows</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="1100" y="560" width="90" height="120" rx="18" class="platform"/>
+              <text x="1145" y="610" text-anchor="middle" class="label">macos/</text>
+              <text x="1145" y="634" text-anchor="middle" class="small">macOS</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="320" y="720" width="220" height="70" rx="18" class="warn"/>
+              <text x="430" y="760" text-anchor="middle" class="label">build/</text>
+            </g>
+
+            <g filter="url(#shadow)">
+              <rect x="600" y="720" width="220" height="70" rx="18" class="warn"/>
+              <text x="710" y="760" text-anchor="middle" class="label">.dart_tool/</text>
+            </g>
+
+            <path class="path" d="M210 324 V390"/>
+            <path class="path" d="M520 324 V380"/>
+            <path class="path" d="M830 324 V380"/>
+            <path class="path" d="M1090 324 V380"/>
+
+            <path class="path" d="M650 490 V560"/>
+            <path class="path" d="M185 680 V720"/>
+            <path class="path" d="M710 680 V720"/>
+
+            <g>
+              <rect x="70" y="430" width="260" height="95" rx="18" class="lib"/>
+              <text x="200" y="470" text-anchor="middle" class="label">main.dart</text>
+              <text x="200" y="494" text-anchor="middle" class="small">Entrada: runApp(MyApp())</text>
+            </g>
+
+            <g>
+              <rect x="910" y="430" width="260" height="95" rx="18" class="screen"/>
+              <text x="1040" y="470" text-anchor="middle" class="label">counter_functions_screen.dart</text>
+              <text x="1040" y="494" text-anchor="middle" class="small">UI + lógica del contador</text>
+            </g>
+
+            <path class="path" d="M330 478 H910"/>
+            <path class="path" d="M1040 525 V560"/>
+
+            <g>
+              <rect x="950" y="642" width="220" height="70" rx="18" class="data"/>
+              <text x="1060" y="682" text-anchor="middle" class="label">README.md</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="legend">
+          <span class="legend-item"><span class="dot blue"></span> Lógica / librería</span>
+          <span class="legend-item"><span class="dot purple"></span> UI / presentación</span>
+          <span class="legend-item"><span class="dot yellow"></span> Pantallas</span>
+          <span class="legend-item"><span class="dot orange"></span> Plataformas</span>
+          <span class="legend-item"><span class="dot green"></span> Estado / test</span>
+        </div>
+
+        <div class="detail-card">
+          <h2 id="detail-title">hello_world_app</h2>
+          <p id="detail-text">El proyecto Flutter está organizado en carpetas por propósito: lib para lógica, presentation para interfaces, screens para pantallas, y carpetas específicas por plataforma para compilar la app en Android, iOS, web y desktop.</p>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const details = {
+        root: {
+          title: 'hello_world_app',
+          text: 'Es la raíz del proyecto Flutter. Aquí vive la app, la configuración del proyecto, las plataformas y la estructura de compilación.'
+        },
+        lib: {
+          title: 'lib/',
+          text: 'Contiene el código fuente principal de la aplicación. En este caso, tiene la lógica de inicio en main.dart y la capa de presentación.'
+        },
+        presentation: {
+          title: 'presentation/',
+          text: 'Es la capa de interfaz. Agrupa las pantallas y widgets visuales que se muestran al usuario.'
+        },
+        screens: {
+          title: 'screens/',
+          text: 'Aquí se definen las pantallas de la aplicación. En este caso, la pantalla del contador.'
+        },
+        counter: {
+          title: 'counter/',
+          text: 'Es el módulo del contador. Incluye counter_screen.dart y counter_functions_screen.dart, que representan la lógica y la vista del contador.'
+        },
+        platforms: {
+          title: 'android / ios / web / linux / windows / macos',
+          text: 'Estas carpetas contienen la configuración específica para cada plataforma destino de la app Flutter.'
+        },
+        test: {
+          title: 'test/',
+          text: 'Se usa para pruebas automatizadas del proyecto, validando comportamiento y estabilidad.'
+        },
+        build: {
+          title: 'build/',
+          text: 'Es la salida generada por Flutter tras compilar la aplicación para cada plataforma.'
+        }
+      };
+
+      const nodes = document.querySelectorAll('.node');
+      const title = document.getElementById('detail-title');
+      const text = document.getElementById('detail-text');
+
+      nodes.forEach(node => {
+        node.addEventListener('click', () => {
+          nodes.forEach(n => n.classList.remove('active'));
+          node.classList.add('active');
+          const key = node.dataset.target;
+          title.textContent = details[key].title;
+          text.textContent = details[key].text;
+        });
+      });
+    </script>
+  </body>
+</html>

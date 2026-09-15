@@ -1,0 +1,273 @@
+{
+    "schema_version":  1,
+    "diagram_type":  "architecture",
+    "meta":  {
+                 "title":  "hello_world_app · Arquitectura",
+                 "quality_profile":  "showcase",
+                 "viewBox":  [
+                                 1240,
+                                 700
+                             ],
+                 "repository":  {
+                                    "revision":  "6fe1c200ea1bbdb0c9947a47ed55b289a39db32f",
+                                    "url":  "https://github.com/DevFntxy/Practicas_DMI_230892"
+                                }
+             },
+    "components":  [
+                       {
+                           "id":  "entry",
+                           "type":  "frontend",
+                           "label":  "main() → MyApp",
+                           "sublabel":  "MaterialApp · Material 3",
+                           "pos":  [
+                                       50,
+                                       280
+                                   ],
+                           "size":  [
+                                        260,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/lib/main.dart",
+                                               "line":  4
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "screen",
+                           "type":  "frontend",
+                           "label":  "CounterFunctionsScreen",
+                           "sublabel":  "Pantalla inicial · StatefulWidget",
+                           "pos":  [
+                                       480,
+                                       280
+                                   ],
+                           "size":  [
+                                        280,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/lib/presentation/screens/counter/counter_functions_screen.dart",
+                                               "line":  3
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "state",
+                           "type":  "frontend",
+                           "label":  "Estado local",
+                           "sublabel":  "clickCounter · counterColor",
+                           "pos":  [
+                                       930,
+                                       280
+                                   ],
+                           "size":  [
+                                        260,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/lib/presentation/screens/counter/counter_functions_screen.dart",
+                                               "line":  11
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "test",
+                           "type":  "external",
+                           "label":  "Prueba de widgets",
+                           "sublabel":  "Busca Icons.add: discrepancia",
+                           "pos":  [
+                                       50,
+                                       70
+                                   ],
+                           "size":  [
+                                        260,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/test/widget_test.dart",
+                                               "line":  14
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "buttons",
+                           "type":  "frontend",
+                           "label":  "CustomButton",
+                           "sublabel":  "FloatingActionButton · callbacks",
+                           "pos":  [
+                                       480,
+                                       510
+                                   ],
+                           "size":  [
+                                        280,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/lib/presentation/screens/counter/counter_functions_screen.dart",
+                                               "line":  103
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "alternate",
+                           "type":  "frontend",
+                           "label":  "CounterScreen",
+                           "sublabel":  "Contador alternativo sin ruta",
+                           "pos":  [
+                                       930,
+                                       510
+                                   ],
+                           "size":  [
+                                        260,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/lib/presentation/screens/counter/counter_screen.dart",
+                                               "line":  3
+                                           },
+                                           {
+                                               "path":  "hello_world_app/lib/main.dart",
+                                               "line":  2
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "mobile",
+                           "type":  "external",
+                           "label":  "Android / iOS",
+                           "sublabel":  "FlutterActivity / AppDelegate",
+                           "pos":  [
+                                       480,
+                                       70
+                                   ],
+                           "size":  [
+                                        280,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/android/app/src/main/kotlin/com/example/hello_world_app/MainActivity.kt"
+                                           },
+                                           {
+                                               "path":  "hello_world_app/ios/Runner/AppDelegate.swift"
+                                           },
+                                           {
+                                               "path":  "hello_world_app/ios/Runner/SceneDelegate.swift"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "desktop",
+                           "type":  "external",
+                           "label":  "Windows / Linux / macOS",
+                           "sublabel":  "Runners nativos de Flutter",
+                           "pos":  [
+                                       930,
+                                       70
+                                   ],
+                           "size":  [
+                                        260,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/windows/runner/flutter_window.cpp"
+                                           },
+                                           {
+                                               "path":  "hello_world_app/linux/runner/my_application.cc"
+                                           },
+                                           {
+                                               "path":  "hello_world_app/macos/Runner/MainFlutterWindow.swift"
+                                           }
+                                       ]
+                       },
+                       {
+                           "id":  "web",
+                           "type":  "external",
+                           "label":  "Web",
+                           "sublabel":  "Carga flutter_bootstrap.js",
+                           "pos":  [
+                                       50,
+                                       510
+                                   ],
+                           "size":  [
+                                        260,
+                                        80
+                                    ],
+                           "sources":  [
+                                           {
+                                               "path":  "hello_world_app/web/index.html"
+                                           },
+                                           {
+                                               "path":  "hello_world_app/web/manifest.json"
+                                           }
+                                       ]
+                       }
+                   ],
+    "connections":  [
+                        {
+                            "id":  "home",
+                            "from":  "entry",
+                            "to":  "screen",
+                            "label":  "home",
+                            "variant":  "emphasis"
+                        },
+                        {
+                            "id":  "owns",
+                            "from":  "screen",
+                            "to":  "state",
+                            "label":  "setState()",
+                            "variant":  "emphasis"
+                        },
+                        {
+                            "id":  "composition",
+                            "from":  "screen",
+                            "to":  "buttons",
+                            "label":  "Construye 3",
+                            "labelDy":  70
+                        },
+                        {
+                            "id":  "pump",
+                            "from":  "test",
+                            "to":  "entry",
+                            "label":  "pumpWidget",
+                            "labelDy":  70
+                        }
+                    ],
+    "cards":  [
+                  {
+                      "dot":  "cyan",
+                      "title":  "Comportamiento observado",
+                      "items":  [
+                                    "Inicia en 0; suma, resta y reinicia.",
+                                    "Positivo: verde; negativo: rojo; cero: azul.",
+                                    "Estado en memoria; lib/ no contiene API ni persistencia."
+                                ]
+                  },
+                  {
+                      "dot":  "violet",
+                      "title":  "Dependencias y plataformas",
+                      "items":  [
+                                    "pubspec.yaml: Dart ^3.13.2, Flutter, cupertino_icons ^1.0.8.",
+                                    "Desarrollo: flutter_test y flutter_lints ^6.0.0.",
+                                    "Seis plataformas presentes; compilación no comprobada."
+                                ]
+                  },
+                  {
+                      "dot":  "amber",
+                      "title":  "Evidencia y alcance",
+                      "items":  [
+                                    "README.md concuerda con las funciones del contador.",
+                                    "Prueba desalineada: UI usa Icons.plus_one; no ejecutada.",
+                                    "Inspección estática; build/ y .dart_tool/ excluidos."
+                                ]
+                  }
+              ]
+}
