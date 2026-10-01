@@ -2,7 +2,7 @@
 
 ## Diagrama
 
-- [Enlace al diagrama](https://devfntxy.github.io/diagramweb/)
+- [Enlace al diagrama](https://devfntxy.github.io/Practicas_DMI_230892/)
 
 Este diagrama fue creado con Archify para ofrecer una mejor comprensión del sistema de Flutter, la estructura del proyecto y cómo interactúan sus componentes dentro de la aplicación.
 
