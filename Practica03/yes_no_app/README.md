@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# Yes No App
+# Práctica 03 - Yes No App
 
 Aplicación Flutter que simula un chat con respuestas aleatorias de tipo sí/no/tal vez, mostrando un mensaje del bot y una imagen GIF relacionada.
 
@@ -24,24 +23,12 @@ Esta app consume la API pública de YesNo WTF para obtener una respuesta aleator
 
 ## Stack tecnológico
 
-=======
-# Práctica 03 - Yes No App
-
-## Descripción
-
-En esta práctica se desarrolló una aplicación móvil utilizando **Flutter y Dart**.
-
-La aplicación funciona como un pequeño chat que permite enviar mensajes y obtener respuestas de tipo **Sí, No o Tal vez** utilizando una API.
-
-## Tecnologías utilizadas
-
->>>>>>> 0c8f36a3046f8c921ddb99b020740bf351fccf9e
 - Flutter
 - Dart
 - Provider
 - Dio
-<<<<<<< HEAD
 - Material Design
+- API Yes/No de `yesno.wtf`
 
 ## Evidencia visual
 
@@ -134,28 +121,6 @@ La respuesta se convierte en un modelo `YesNoModel` y después se transforma en 
 - En la versión actual, los GIFs se manejan principalmente desde URLs web, y la vista los renderiza con `Image.network` cuando corresponde.
 - La app está pensada como base para ampliar funcionalidad de chat, historial y más respuestas.
 
-=======
-- API Yes/No
-
-## Funcionamiento
-
-La aplicación permite:
-
-- Escribir mensajes.
-- Enviar mensajes.
-- Obtener una respuesta automáticamente.
-- Mostrar diferentes imágenes/GIF dependiendo de la respuesta.
-- Consumir una API externa.
-
-## API utilizada
-
-https://yesno.wtf/api
-
-## Evidencias
-
-- Si , Tal vez 
-![Captura 1](/Practica03/yes_no_app/assets/caps-practica03/Screenshot_2026-09-28-14-53-15-256_com.example.yes_no_app.jpg)
-
-- No
-![Captura 1](/Practica03/yes_no_app/assets/caps-practica03/Screenshot_2026-09-28-14-53-20-067_com.example.yes_no_app.jpg)
->>>>>>> 0c8f36a3046f8c921ddb99b020740bf351fccf9e
+- Capturas adicionales:
+  - Respuestas "Sí" y "Tal vez": [Screenshot_2026-09-28-14-53-15-256_com.example.yes_no_app.jpg](assets/caps-practica03/Screenshot_2026-09-28-14-53-15-256_com.example.yes_no_app.jpg)
+  - Respuesta "No": [Screenshot_2026-09-28-14-53-20-067_com.example.yes_no_app.jpg](assets/caps-practica03/Screenshot_2026-09-28-14-53-20-067_com.example.yes_no_app.jpg)
