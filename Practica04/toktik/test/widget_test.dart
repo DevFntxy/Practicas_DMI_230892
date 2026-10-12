@@ -1,30 +1,112 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:toktik/main.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toktik/config/theme/season_theme.dart';
+import 'package:toktik/domain/entities/video_post.dart';
+import 'package:toktik/presentation/providers/discover_provider.dart';
+import 'package:toktik/presentation/providers/seasonal_theme_provider.dart';
+import 'package:toktik/presentation/screens/splash/seasonal_splash_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  test('loads videos from MP4, Dailymotion, and Vimeo', () async {
+    final provider = DiscoverProvider();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await provider.loadNextPage();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(
+      provider.videos.where((video) => video.source == VideoSource.directMp4),
+      hasLength(1),
+    );
+    expect(
+      provider.videos
+          .singleWhere((video) => video.source == VideoSource.directMp4)
+          .videoUrl
+          .endsWith('.mp4'),
+      isTrue,
+    );
+    expect(
+      provider.videos.map((video) => video.source).toSet(),
+      containsAll(VideoSource.values),
+    );
+    expect(provider.loadError, isNull);
+  });
+
+  test(
+    'persists like changes and includes liked videos in Favorites',
+    () async {
+      final provider = DiscoverProvider();
+      await provider.loadNextPage();
+      final video = provider.videos.first;
+      final initialLikes = provider.likesFor(video);
+
+      await provider.toggleLike(video);
+      await provider.toggleFavorite(video);
+
+      final restoredProvider = DiscoverProvider();
+      await restoredProvider.loadNextPage();
+
+      expect(restoredProvider.likesFor(video), initialLikes + 1);
+      expect(restoredProvider.isLiked(video), isTrue);
+      expect(
+        restoredProvider.favoritesVideos.map((favorite) => favorite.id),
+        contains(video.id),
+      );
+
+      await restoredProvider.toggleLike(video);
+      final updatedProvider = DiscoverProvider();
+      await updatedProvider.loadNextPage();
+
+      expect(updatedProvider.likesFor(video), initialLikes);
+      expect(updatedProvider.isLiked(video), isFalse);
+    },
+  );
+
+  test(
+    'persists a manual seasonal theme and restores automatic mode',
+    () async {
+      final provider = SeasonalThemeProvider();
+      await provider.initialize();
+
+      await provider.setTheme(SeasonTheme.christmas);
+      final restoredProvider = SeasonalThemeProvider();
+      await restoredProvider.initialize();
+      expect(restoredProvider.currentTheme, SeasonTheme.christmas);
+
+      await restoredProvider.setTheme(null);
+      expect(restoredProvider.manualTheme, isNull);
+    },
+  );
+
+  testWidgets('shows the saved seasonal welcome screen', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      'toktik.season_theme': 'christmas',
+      'toktik.season_sounds_enabled': false,
+    });
+
+    await tester.pumpWidget(
+      ChangeNotifierProvider(
+        create: (_) => SeasonalThemeProvider(),
+        child: const MaterialApp(home: SeasonalSplashScreen()),
+      ),
+    );
+
+    for (
+      var attempt = 0;
+      attempt < 10 && find.text('La magia de la Navidad').evaluate().isEmpty;
+      attempt++
+    ) {
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+
+    expect(find.text('La magia de la Navidad'), findsOneWidget);
+    expect(find.text('Activar música'), findsOneWidget);
+    expect(find.text('Entrar ahora'), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
   });
 }

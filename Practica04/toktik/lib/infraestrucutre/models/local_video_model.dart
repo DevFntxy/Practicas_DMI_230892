@@ -13,7 +13,7 @@ class LocalVideoModel {
     this.views = 0,
   });
 
-
+  
   factory LocalVideoModel.fromJson(Map<String, dynamic> json) => LocalVideoModel(
     name: json['name'] ?? '',
     videoUrl: json['videoUrl'] ?? '',
@@ -21,7 +21,7 @@ class LocalVideoModel {
     views: json['views'] ?? 0,
   );
 
-
+  
   VideoPost toVideoPostEntity() => VideoPost(
     caption: name, 
     videoUrl: videoUrl,

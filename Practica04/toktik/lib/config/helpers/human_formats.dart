@@ -12,5 +12,5 @@ class HumanFormats {
     return formatterNumber;
   }
 
-}
 
+}
