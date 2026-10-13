@@ -64,6 +64,7 @@ class SeasonalThemeProvider extends ChangeNotifier {
 
   Future<void> _playSeasonSoundNow(SeasonalTheme theme) async {
     await _audioPlayer.stop();
+    await _audioPlayer.setVolume(1);
     switch (theme.season) {
       case Season.halloween:
         await _audioPlayer.play(AssetSource('audios/Sonido risa malvada.mp3'));

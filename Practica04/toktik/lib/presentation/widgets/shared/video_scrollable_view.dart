@@ -87,6 +87,7 @@ class _VideoPage extends StatefulWidget {
 
 class _VideoPageState extends State<_VideoPage> {
   bool _isDescriptionExpanded = false;
+  bool _isMuted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,11 @@ class _VideoPageState extends State<_VideoPage> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        FullScreenPlayer(video: widget.video),
+        FullScreenPlayer(
+          video: widget.video,
+          isMuted: _isMuted,
+          onMuteChanged: (isMuted) => setState(() => _isMuted = isMuted),
+        ),
         Positioned(
           left: 16,
           right: 92,
@@ -121,6 +126,8 @@ class _VideoPageState extends State<_VideoPage> {
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: VideoButtons(
                 video: widget.video,
+                isMuted: _isMuted,
+                onToggleMute: () => setState(() => _isMuted = !_isMuted),
                 onLike: () => _runMutation(
                   context,
                   () => provider.toggleLike(widget.video),

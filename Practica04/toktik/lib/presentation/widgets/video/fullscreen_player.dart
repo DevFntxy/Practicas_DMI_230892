@@ -11,8 +11,15 @@ import 'package:toktik/presentation/widgets/video/video_background.dart';
 
 class FullScreenPlayer extends StatefulWidget {
   final VideoPost video;
+  final bool isMuted;
+  final ValueChanged<bool> onMuteChanged;
 
-  const FullScreenPlayer({super.key, required this.video});
+  const FullScreenPlayer({
+    super.key,
+    required this.video,
+    required this.isMuted,
+    required this.onMuteChanged,
+  });
 
   @override
   State<FullScreenPlayer> createState() => _FullScreenPlayerState();
@@ -24,7 +31,6 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
   VideoPlayerController? _videoController;
   Timer? _controlsHideTimer;
   bool _areControlsVisible = false;
-  bool _isMuted = false;
   bool _isPlaying = true;
   int _playbackRequest = 0;
 
@@ -35,6 +41,14 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
     _initialization = _initialize();
   }
 
+  @override
+  void didUpdateWidget(covariant FullScreenPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isMuted != widget.isMuted) {
+      unawaited(_applyMute(widget.isMuted));
+    }
+  }
+
   Future<void> _initialize() async {
     if (kIsWeb && widget.video.source != VideoSource.local) return;
 
@@ -43,7 +57,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
       _videoController = controller;
       await controller.initialize();
       await controller.setLooping(true);
-      await controller.setVolume(1);
+      await controller.setVolume(widget.isMuted ? 0 : 1);
       await controller.play();
       return;
     }
@@ -57,7 +71,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
       _videoController = controller;
       await controller.initialize();
       await controller.setLooping(true);
-      await controller.setVolume(1);
+      await controller.setVolume(widget.isMuted ? 0 : 1);
       await controller.play();
       return;
     }
@@ -84,6 +98,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
     );
     _podController = controller;
     await controller.initialise();
+    if (widget.isMuted) await controller.mute();
   }
 
   String _vimeoVideoId(String url) {
@@ -128,22 +143,15 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
     }
   }
 
-  Future<void> _toggleMute() async {
-    final shouldMute = !_isMuted;
+  Future<void> _applyMute(bool isMuted) async {
     try {
       final videoController = _videoController;
       if (videoController != null) {
-        await videoController.setVolume(shouldMute ? 0 : 1);
-      } else if (kIsWeb && widget.video.source != VideoSource.local) {
-        // The embedded player receives the new volume state in build().
+        await videoController.setVolume(isMuted ? 0 : 1);
       } else if (_podController case final controller?) {
-        if (shouldMute) {
-          await controller.mute();
-        } else {
-          await controller.unMute();
-        }
+        if (isMuted) await controller.mute();
+        if (!isMuted) await controller.unMute();
       }
-      if (mounted) setState(() => _isMuted = shouldMute);
     } catch (error) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -205,7 +213,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                 videoUrl: widget.video.videoUrl,
                 source: widget.video.source,
                 isPaused: !_isPlaying,
-                isMuted: _isMuted,
+                isMuted: widget.isMuted,
                 playbackRequest: _playbackRequest,
               )
             else if (_videoController != null)
@@ -243,19 +251,6 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                                   : Icons.play_arrow_rounded,
                               size: 66,
                               onPressed: _togglePlayback,
-                            ),
-                          ),
-                          Positioned(
-                            right: 20,
-                            bottom: 300,
-                            child: _PlayerControlButton(
-                              tooltip: _isMuted
-                                  ? 'Activar sonido'
-                                  : 'Silenciar video',
-                              icon: _isMuted
-                                  ? Icons.volume_off_rounded
-                                  : Icons.volume_up_rounded,
-                              onPressed: _toggleMute,
                             ),
                           ),
                         ],

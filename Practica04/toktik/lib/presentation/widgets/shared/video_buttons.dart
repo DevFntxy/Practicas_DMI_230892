@@ -5,14 +5,18 @@ import 'package:toktik/domain/entities/video_post.dart';
 
 class VideoButtons extends StatelessWidget {
   final VideoPost video;
+  final bool isMuted;
   final VoidCallback onLike;
   final VoidCallback onFavorite;
+  final VoidCallback onToggleMute;
 
   const VideoButtons({
     super.key,
     required this.video,
+    required this.isMuted,
     required this.onLike,
     required this.onFavorite,
+    required this.onToggleMute,
   });
 
   @override
@@ -38,8 +42,19 @@ class VideoButtons extends StatelessWidget {
           value: 0,
           color: video.isFavorite ? Colors.amber : Colors.white,
           iconData: video.isFavorite ? Icons.bookmark : Icons.bookmark_border,
-          tooltip: video.isFavorite ? 'Quitar de favoritos' : 'Guardar favorito',
+          tooltip: video.isFavorite
+              ? 'Quitar de favoritos'
+              : 'Guardar favorito',
           onPressed: onFavorite,
+        ),
+        const SizedBox(height: 16),
+        _CustomIconButton(
+          value: 0,
+          iconData: isMuted
+              ? Icons.volume_off_rounded
+              : Icons.volume_up_rounded,
+          tooltip: isMuted ? 'Activar sonido' : 'Silenciar video',
+          onPressed: onToggleMute,
         ),
         const SizedBox(height: 16),
         SpinPerfect(
@@ -81,8 +96,7 @@ class _CustomIconButton extends StatelessWidget {
           onPressed: onPressed,
           icon: Icon(iconData, color: color, size: 30),
         ),
-        if (value > 0)
-          Text(HumanFormats.humanReadableNumber(value.toDouble())),
+        if (value > 0) Text(HumanFormats.humanReadableNumber(value.toDouble())),
       ],
     );
   }
