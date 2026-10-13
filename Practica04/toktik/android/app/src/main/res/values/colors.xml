@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_normal_background">#6750A4</color>
+    <color name="launcher_halloween_background">#241333</color>
+    <color name="launcher_christmas_background">#173A2B</color>
+    <color name="launcher_valentines_background">#57152F</color>
+</resources>

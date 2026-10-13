@@ -48,7 +48,8 @@ class DiscoverScreen extends StatelessWidget {
                 ],
               ),
             ),
-            if (seasonalProvider.audioError != null)
+            if (seasonalProvider.audioError != null ||
+                seasonalProvider.launcherIconError != null)
               Positioned(
                 top: MediaQuery.paddingOf(context).top + 124,
                 left: 16,
@@ -59,7 +60,8 @@ class DiscoverScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      seasonalProvider.audioError!,
+                      seasonalProvider.audioError ??
+                          seasonalProvider.launcherIconError!,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -195,7 +197,10 @@ class _SeasonHeader extends StatelessWidget {
       );
     }
 
-    if (!messenger.mounted || provider.audioError == null) return;
-    messenger.showSnackBar(SnackBar(content: Text(provider.audioError!)));
+    if (!messenger.mounted) return;
+    final error = provider.audioError ?? provider.launcherIconError;
+    if (error != null) {
+      messenger.showSnackBar(SnackBar(content: Text(error)));
+    }
   }
 }

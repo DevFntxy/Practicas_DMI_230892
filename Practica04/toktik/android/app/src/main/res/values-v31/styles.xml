@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LaunchThemeNormal" parent="@style/LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_normal</item>
+        <item name="android:windowSplashScreenBackground">#101010</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/fanso_normal</item>
+    </style>
+    <style name="LaunchThemeHalloween" parent="@style/LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_halloween</item>
+        <item name="android:windowSplashScreenBackground">#140D1B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/fanso_terror</item>
+    </style>
+    <style name="LaunchThemeChristmas" parent="@style/LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_christmas</item>
+        <item name="android:windowSplashScreenBackground">#101A16</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/fanso_navidad</item>
+    </style>
+    <style name="LaunchThemeValentines" parent="@style/LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_valentines</item>
+        <item name="android:windowSplashScreenBackground">#1D0D16</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/launcher_valentines_foreground</item>
+    </style>
+</resources>

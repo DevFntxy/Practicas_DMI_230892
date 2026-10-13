@@ -3,16 +3,22 @@ import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:toktik/config/theme/season_theme.dart';
 import 'package:toktik/domain/repositories/seasonal_theme_preferences_repository.dart';
 
 class SeasonalThemeProvider extends ChangeNotifier {
+  static const _launcherIconChannel = MethodChannel(
+    'com.example.toktik/seasonal_launcher_icon',
+  );
+
   final SeasonalThemePreferencesRepository preferences;
   final AudioPlayer _audioPlayer;
 
   DateTime? simulatedDate;
   SeasonalTheme activeTheme = SeasonalTheme.forDate(DateTime.now());
   String? audioError;
+  String? launcherIconError;
   bool isReady = false;
   bool _isDisposed = false;
 
@@ -26,6 +32,7 @@ class SeasonalThemeProvider extends ChangeNotifier {
     activeTheme = SeasonalTheme.forDate(effectiveDate);
     isReady = true;
     notifyListeners();
+    unawaited(_updateLauncherIcon(activeTheme));
     unawaited(_playSeasonSound(activeTheme));
   }
 
@@ -47,9 +54,30 @@ class SeasonalThemeProvider extends ChangeNotifier {
     activeTheme = nextTheme;
     audioError = null;
     notifyListeners();
+    unawaited(_updateLauncherIcon(nextTheme));
 
     if (playSound && changed) {
       unawaited(_playSeasonSound(nextTheme));
+    }
+  }
+
+  Future<void> _updateLauncherIcon(SeasonalTheme theme) async {
+    if (defaultTargetPlatform != TargetPlatform.android) return;
+
+    try {
+      await _launcherIconChannel.invokeMethod<void>(
+        'setSeasonalIcon',
+        {'season': theme.season.name},
+      );
+      launcherIconError = null;
+    } on PlatformException catch (error) {
+      launcherIconError =
+          'No se pudo actualizar el icono de temporada: ${error.message}';
+      if (!_isDisposed) notifyListeners();
+    } on MissingPluginException catch (error) {
+      launcherIconError =
+          'No se encontró el servicio para cambiar el icono: ${error.message}';
+      if (!_isDisposed) notifyListeners();
     }
   }
 
