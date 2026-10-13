@@ -82,30 +82,41 @@ void main() {
     },
   );
 
-  testWidgets('shows the saved seasonal welcome screen', (tester) async {
+  testWidgets('requires seasonal music before leaving the welcome screen', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({
       'toktik.season_theme': 'christmas',
       'toktik.season_sounds_enabled': false,
     });
 
+    final themeProvider = SeasonalThemeProvider();
     await tester.pumpWidget(
-      ChangeNotifierProvider(
-        create: (_) => SeasonalThemeProvider(),
+      ChangeNotifierProvider.value(
+        value: themeProvider,
         child: const MaterialApp(home: SeasonalSplashScreen()),
       ),
     );
 
     for (
       var attempt = 0;
-      attempt < 10 && find.text('La magia de la Navidad').evaluate().isEmpty;
+      attempt < 20 &&
+          find.text('Iniciar música').evaluate().isEmpty &&
+          find.text('Comenzar con música').evaluate().isEmpty;
       attempt++
     ) {
       await tester.pump(const Duration(milliseconds: 50));
     }
 
     expect(find.text('La magia de la Navidad'), findsOneWidget);
-    expect(find.text('Activar música'), findsOneWidget);
-    expect(find.text('Entrar ahora'), findsOneWidget);
+    expect(
+      find.text('Iniciar música').evaluate().isNotEmpty ||
+          find.text('Comenzar con música').evaluate().isNotEmpty ||
+          find.text('Sonando la música de Christmas').evaluate().isNotEmpty,
+      isTrue,
+    );
+    expect(find.text('Entrar ahora'), findsNothing);
+    expect(themeProvider.soundsEnabled, isTrue);
 
     await tester.pumpWidget(const SizedBox());
   });

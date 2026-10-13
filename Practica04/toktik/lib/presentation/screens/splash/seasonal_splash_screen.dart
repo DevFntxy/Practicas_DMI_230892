@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toktik/config/theme/season_theme.dart';
@@ -15,12 +16,13 @@ class SeasonalSplashScreen extends StatefulWidget {
 
 class _SeasonalSplashScreenState extends State<SeasonalSplashScreen>
     with SingleTickerProviderStateMixin {
-  static const _displayDuration = Duration(seconds: 5);
+  static const _displayDuration = Duration(seconds: 12);
 
   late final AnimationController _logoAnimation;
   Timer? _navigationTimer;
   bool _isReady = false;
   bool _isOpeningApp = false;
+  bool _needsAudioTap = kIsWeb;
   String? _startupError;
 
   @override
@@ -39,16 +41,15 @@ class _SeasonalSplashScreenState extends State<SeasonalSplashScreen>
     final themeProvider = context.read<SeasonalThemeProvider>();
     try {
       await themeProvider.initialize();
+      await themeProvider.setSoundsEnabled(true);
       if (!mounted) return;
       setState(() {
         _isReady = true;
         _startupError = null;
       });
-      if (themeProvider.soundsEnabled) {
-        unawaited(themeProvider.playThemeMusic());
+      if (!_needsAudioTap) {
+        await _startMusicAndTimer();
       }
-      _navigationTimer?.cancel();
-      _navigationTimer = Timer(_displayDuration, _openApp);
     } catch (error) {
       if (!mounted) return;
       setState(() {
@@ -58,14 +59,23 @@ class _SeasonalSplashScreenState extends State<SeasonalSplashScreen>
     }
   }
 
-  Future<void> _toggleMusic() async {
+  Future<void> _startMusicAndTimer() async {
     final provider = context.read<SeasonalThemeProvider>();
-    if (provider.isThemeMusicPlaying) {
-      await provider.setSoundsEnabled(false);
+    await provider.playThemeMusic();
+    if (!mounted) return;
+    if (!provider.isThemeMusicPlaying) {
+      setState(() {
+        _needsAudioTap = true;
+        _startupError = provider.soundError ?? 'No se pudo iniciar la música.';
+      });
       return;
     }
-    if (!provider.soundsEnabled) await provider.setSoundsEnabled(true);
-    await provider.playThemeMusic();
+    setState(() {
+      _needsAudioTap = false;
+      _startupError = null;
+    });
+    _navigationTimer?.cancel();
+    _navigationTimer = Timer(_displayDuration, _openApp);
   }
 
   Future<void> _openApp() async {
@@ -173,48 +183,36 @@ class _SeasonalSplashScreenState extends State<SeasonalSplashScreen>
                   if (!_isReady)
                     const CircularProgressIndicator()
                   else if (_startupError != null)
-                    Text(
-                      _startupError!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: colors.error),
+                    Column(
+                      children: [
+                        Text(
+                          _startupError!,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: colors.error),
+                        ),
+                        const SizedBox(height: 12),
+                        FilledButton.icon(
+                          onPressed: () => unawaited(_startMusicAndTimer()),
+                          icon: const Icon(Icons.music_note),
+                          label: const Text('Iniciar música'),
+                        ),
+                      ],
+                    )
+                  else if (_needsAudioTap)
+                    FilledButton.icon(
+                      onPressed: () => unawaited(_startMusicAndTimer()),
+                      icon: const Icon(Icons.music_note),
+                      label: const Text('Comenzar con música'),
                     )
                   else ...[
                     const CircularProgressIndicator(),
                     const SizedBox(height: 12),
-                    const Text('Preparando tu experiencia...'),
-                  ],
-                  if (theme.soundError != null) ...[
-                    const SizedBox(height: 12),
                     Text(
-                      theme.soundError!,
+                      'Sonando la música de ${season.label}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: colors.error),
                     ),
                   ],
-                  const SizedBox(height: 28),
-                  OutlinedButton.icon(
-                    onPressed: _isReady ? _toggleMusic : null,
-                    icon: Icon(
-                      theme.isThemeMusicPlaying
-                          ? Icons.music_off
-                          : Icons.music_note,
-                    ),
-                    label: Text(
-                      theme.isThemeMusicPlaying
-                          ? 'Desactivar música'
-                          : 'Activar música',
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: _isReady ? _openApp : null,
-                    child: const Text('Entrar ahora'),
-                  ),
-                  if (_startupError != null)
-                    TextButton(
-                      onPressed: () => unawaited(_prepareSplash()),
-                      child: const Text('Reintentar'),
-                    ),
+                  if (_startupError != null) const SizedBox(height: 16),
                 ],
               ),
             ),

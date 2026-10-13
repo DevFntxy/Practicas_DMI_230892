@@ -13,10 +13,11 @@ persistencia local y temas visuales de temporada.
   sistema, una señal de audio y una música de inicio original guardada en
   `assets/audio/`.
 - **Pantalla de inicio:** muestra una bienvenida animada con el tema activo al
-  abrir la aplicación. Reproduce en bucle la música de esa temporada y entra al
-  feed después de unos segundos; también permite activar/desactivar música o
-  entrar inmediatamente. Si el navegador o dispositivo bloquea el audio
-  automático, se puede activar desde el botón en pantalla.
+  abrir la aplicación. La música de esa temporada debe empezar antes de acceder
+  al feed y se reproduce en bucle durante una bienvenida de 12 segundos. En
+  navegadores que bloquean el autoplay, hay que pulsar **Comenzar con música**
+  para dar permiso e iniciar la experiencia; no se puede omitir la música ni
+  entrar antes de que termine la pantalla.
 - **Discover / For You / Favorites:** tres feeds con repositorios separados.
   Se cambia entre ellos deslizando horizontalmente o usando la navegación
   inferior; los videos avanzan verticalmente dentro de cada feed. For You ordena
