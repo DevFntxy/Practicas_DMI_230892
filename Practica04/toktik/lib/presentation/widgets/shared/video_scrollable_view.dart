@@ -86,7 +86,6 @@ class _VideoPage extends StatefulWidget {
 }
 
 class _VideoPageState extends State<_VideoPage> {
-  bool _isMuted = true;
   bool _isDescriptionExpanded = false;
 
   @override
@@ -96,15 +95,11 @@ class _VideoPageState extends State<_VideoPage> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        FullScreenPlayer(
-          video: widget.video,
-          isMuted: _isMuted,
-          onMuteChanged: (isMuted) => setState(() => _isMuted = isMuted),
-        ),
+        FullScreenPlayer(video: widget.video),
         Positioned(
           left: 16,
           right: 92,
-          bottom: 42,
+          bottom: 32,
           child: _VideoDescription(
             video: widget.video,
             isExpanded: _isDescriptionExpanded,
@@ -114,17 +109,27 @@ class _VideoPageState extends State<_VideoPage> {
           ),
         ),
         Positioned(
-          right: 16,
-          bottom: 28,
-          child: VideoButtons(
-            video: widget.video,
-            onLike: () => _runMutation(
-              context,
-              () => provider.toggleLike(widget.video),
+          right: 12,
+          bottom: 24,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: 0.28),
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(color: Colors.white24),
             ),
-            onFavorite: () => _runMutation(
-              context,
-              () => provider.toggleFavorite(widget.video),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: VideoButtons(
+                video: widget.video,
+                onLike: () => _runMutation(
+                  context,
+                  () => provider.toggleLike(widget.video),
+                ),
+                onFavorite: () => _runMutation(
+                  context,
+                  () => provider.toggleFavorite(widget.video),
+                ),
+              ),
             ),
           ),
         ),
@@ -135,12 +140,29 @@ class _VideoPageState extends State<_VideoPage> {
             decoration: BoxDecoration(
               color: Colors.black54,
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white24),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Text(
-                widget.video.source.name.toUpperCase(),
-                style: theme.textTheme.labelSmall,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    switch (widget.video.source) {
+                      VideoSource.local => Icons.video_library_outlined,
+                      VideoSource.youtube => Icons.smart_display_outlined,
+                      VideoSource.vimeo => Icons.play_circle_outline,
+                      VideoSource.dailymotion => Icons.movie_outlined,
+                    },
+                    size: 14,
+                    color: theme.colorScheme.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    widget.video.source.name.toUpperCase(),
+                    style: theme.textTheme.labelSmall,
+                  ),
+                ],
               ),
             ),
           ),
@@ -177,39 +199,75 @@ class _VideoDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.bodyMedium;
+    final theme = Theme.of(context);
     final needsExpansion = video.description.length > 100;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(video.author, style: Theme.of(context).textTheme.titleMedium),
-        const SizedBox(height: 6),
-        if (isExpanded)
-          SizedBox(
-            height: 150,
-            child: SingleChildScrollView(
-              child: Text(video.description, style: textStyle),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.black.withValues(alpha: 0.72),
+            Colors.black.withValues(alpha: 0.36),
+          ],
+        ),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              video.caption,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-          )
-        else
-          Text(
-            video.description,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: textStyle,
-          ),
-        if (needsExpansion)
-          TextButton(
-            onPressed: onToggle,
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            const SizedBox(height: 3),
+            Text(
+              video.author,
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: Colors.white70,
+              ),
             ),
-            child: Text(isExpanded ? 'menos' : '... más'),
-          ),
-      ],
+            const SizedBox(height: 8),
+            if (isExpanded)
+              SizedBox(
+                height: 120,
+                child: SingleChildScrollView(
+                  child: Text(
+                    video.description,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+              )
+            else
+              Text(
+                video.description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium,
+              ),
+            if (needsExpansion)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  onPressed: onToggle,
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.only(top: 4, bottom: 2),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(isExpanded ? 'Ver menos' : '... más'),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

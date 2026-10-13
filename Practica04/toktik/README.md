@@ -13,9 +13,14 @@ flutter run
 ```
 
 At startup, the seasonal splash screen shows the corresponding logo and plays
-the active theme sound while the local and provider feeds are prepared.
+the active theme sound. The video feeds begin loading after Discover opens.
 
 The app needs internet access to play YouTube, Vimeo, and Dailymotion videos.
+Web builds use each provider's official embedded player to avoid browser CORS
+restrictions when resolving direct streams. Tap a video to reveal the app's
+play/pause and volume controls; audio starts enabled and remains enabled until
+you mute it. Browser autoplay policies may require that first tap before sound
+can play.
 The provider adapters live in `lib/infrastructure/datasources/`; feed and
 preference contracts are in `lib/domain/`.
 
@@ -39,4 +44,5 @@ under `assets/audios/`; normal and Valentine's Day play generated tone cues.
   source order.
 - Likes, like counts, and favorites are stored in device preferences.
 - Expand long descriptions with **... más**; expanded text can be scrolled.
-- The volume control is in the action column beside each video.
+- Video audio starts enabled. Tap the video to reveal pause/play and mute
+  controls.

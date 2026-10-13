@@ -87,6 +87,16 @@ void main() {
         videos.map((video) => video.videoUrl),
         contains('assets/videos/1.mp4'),
       );
+      expect(
+        videos.every(
+          (video) => video.description.toLowerCase().contains('minecraft'),
+        ),
+        isTrue,
+      );
+      expect(
+        videos.any((video) => video.description.length > 100),
+        isTrue,
+      );
     });
 
     test(
