@@ -1,5 +1,0 @@
-import 'package:toktik/domain/entities/video_post.dart';
-
-abstract interface class VideoFeedRepository {
-  Future<List<VideoPost>> getVideos();
-}

@@ -1,141 +1,76 @@
 import 'package:flutter/foundation.dart';
 import 'package:toktik/domain/entities/video_post.dart';
-import 'package:toktik/infrastructure/datasources/local_preferences_data_source.dart';
-import 'package:toktik/infrastructure/repositories/discover_video_repository.dart';
-import 'package:toktik/infrastructure/repositories/favorites_video_repository.dart';
-import 'package:toktik/infrastructure/repositories/for_you_video_repository.dart';
-import 'package:toktik/infrastructure/repositories/video_catalog_repository.dart';
+import 'package:toktik/domain/repositories/video_posts_repository.dart';
 
 class DiscoverProvider extends ChangeNotifier {
-  DiscoverProvider({
-    VideoCatalogRepository? catalog,
-    LocalPreferencesDataSource? preferences,
-  }) : _catalog = catalog ?? VideoCatalogRepository(),
-       _preferences = preferences ?? LocalPreferencesDataSource() {
-    _discoverRepository = DiscoverVideoRepository(_catalog);
-    _forYouRepository = ForYouVideoRepository(_catalog);
-    _favoritesRepository = FavoritesVideoRepository(_catalog, _preferences);
-  }
+  final VideoPostRepository videosRepository;
 
-  final VideoCatalogRepository _catalog;
-  final LocalPreferencesDataSource _preferences;
-  late final DiscoverVideoRepository _discoverRepository;
-  late final ForYouVideoRepository _forYouRepository;
-  late final FavoritesVideoRepository _favoritesRepository;
+  final Map<VideoFeed, List<VideoPost>> _videos = {};
+  final Set<VideoFeed> _loadedFeeds = {};
+  final Set<VideoFeed> _loadingFeeds = {};
+  final Map<VideoFeed, String> errors = {};
 
-  List<VideoPost> _discoverVideos = [];
-  List<VideoPost> _forYouVideos = [];
-  List<VideoPost> _favoritesVideos = [];
-  final Map<String, int> _likeCounts = {};
-  final Set<String> _likedVideoIds = {};
-  final Set<String> _favoriteVideoIds = {};
+  DiscoverProvider({required this.videosRepository});
 
-  bool initialLoading = true;
-  String? loadError;
-  String? actionError;
+  List<VideoPost> videosFor(VideoFeed feed) =>
+      _videos[feed] ?? const <VideoPost>[];
 
-  List<VideoPost> get videos => discoverVideos;
-  List<VideoPost> get discoverVideos => List.unmodifiable(_discoverVideos);
-  List<VideoPost> get forYouVideos => List.unmodifiable(_forYouVideos);
-  List<VideoPost> get favoritesVideos => List.unmodifiable(_favoritesVideos);
+  bool isLoading(VideoFeed feed) => _loadingFeeds.contains(feed);
 
-  int likesFor(VideoPost video) => _likeCounts[video.id] ?? video.likes;
-  bool isLiked(VideoPost video) => _likedVideoIds.contains(video.id);
-  bool isFavorite(VideoPost video) => _favoriteVideoIds.contains(video.id);
-
-  Future<void> loadNextPage() async {
-    initialLoading = true;
-    loadError = null;
-    notifyListeners();
-
-    try {
-      final results = await Future.wait([
-        _discoverRepository.getVideos(),
-        _forYouRepository.getVideos(),
-        _favoritesRepository.getVideos(),
-      ]);
-      final allVideos = results.first;
-      final storedLikes = await Future.wait(
-        allVideos.map(
-          (video) async => (
-            video: video,
-            count: await _preferences.getLikeCount(video),
-            liked: await _preferences.isLiked(video),
-          ),
-        ),
-      );
-
-      _likeCounts
-        ..clear()
-        ..addEntries(
-          storedLikes.map((state) => MapEntry(state.video.id, state.count)),
-        );
-      _likedVideoIds
-        ..clear()
-        ..addAll(
-          storedLikes
-              .where((state) => state.liked)
-              .map((state) => state.video.id),
-        );
-      _favoriteVideoIds
-        ..clear()
-        ..addAll(await _preferences.getFavoriteIds());
-
-      _discoverVideos = results[0];
-      _forYouVideos = results[1];
-      _favoritesVideos = results[2];
-      initialLoading = false;
-    } catch (error) {
-      loadError = 'No se pudieron cargar los videos: $error';
-      initialLoading = false;
+  Future<void> loadFeed(VideoFeed feed, {bool force = false}) async {
+    if (_loadingFeeds.contains(feed) ||
+        (_loadedFeeds.contains(feed) && !force)) {
+      return;
     }
+
+    _loadingFeeds.add(feed);
+    errors.remove(feed);
     notifyListeners();
+    try {
+      _videos[feed] = await videosRepository
+          .getVideos(feed)
+          .timeout(const Duration(seconds: 10));
+      _loadedFeeds.add(feed);
+    } catch (error) {
+      errors[feed] = 'No se pudieron cargar los videos: $error';
+    } finally {
+      _loadingFeeds.remove(feed);
+      notifyListeners();
+    }
   }
 
   Future<void> toggleLike(VideoPost video) async {
-    final liked = !isLiked(video);
-    final count = (likesFor(video) + (liked ? 1 : -1)).clamp(0, 0x7fffffff);
-    try {
-      await _preferences.saveLikeState(
-        video: video,
-        isLiked: liked,
-        likeCount: count,
-      );
-      _likeCounts[video.id] = count;
-      if (liked) {
-        _likedVideoIds.add(video.id);
-      } else {
-        _likedVideoIds.remove(video.id);
-      }
-      actionError = null;
-    } catch (error) {
-      actionError = 'No se pudo guardar el me gusta: $error';
-    }
-    notifyListeners();
+    final updated = await videosRepository.toggleLike(video);
+    _updatePost(updated);
   }
 
   Future<void> toggleFavorite(VideoPost video) async {
-    final updatedIds = Set<String>.from(_favoriteVideoIds);
-    if (!updatedIds.add(video.id)) {
-      updatedIds.remove(video.id);
+    final updated = await videosRepository.toggleFavorite(video);
+    _updatePost(updated);
+    if (_loadedFeeds.contains(VideoFeed.favorites)) {
+      _videos[VideoFeed.favorites] = await videosRepository.getVideos(
+        VideoFeed.favorites,
+      );
+      notifyListeners();
     }
-    try {
-      await _preferences.saveFavoriteIds(updatedIds);
-      _favoriteVideoIds
-        ..clear()
-        ..addAll(updatedIds);
-      _favoritesVideos = _discoverVideos
-          .where((item) => _favoriteVideoIds.contains(item.id))
-          .toList(growable: false);
-      actionError = null;
-    } catch (error) {
-      actionError = 'No se pudo guardar el favorito: $error';
-    }
-    notifyListeners();
   }
 
-  void clearActionError() {
-    actionError = null;
+  void updatePost(VideoPost updated) => _updatePost(updated);
+
+  void _updatePost(VideoPost updated) {
+    for (final feed in VideoFeed.values) {
+      final posts = _videos[feed];
+      if (posts == null) continue;
+      final index = posts.indexWhere((post) => post.id == updated.id);
+      if (index < 0) continue;
+      final nextPosts = [...posts];
+      if (feed == VideoFeed.favorites && !updated.isFavorite) {
+        nextPosts.removeAt(index);
+      } else {
+        nextPosts[index] = updated;
+      }
+      _videos[feed] = nextPosts;
+    }
     notifyListeners();
   }
 }

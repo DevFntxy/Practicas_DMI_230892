@@ -1,47 +1,42 @@
-# TokTik — Práctica 04
+# TokTik
 
-Aplicación Flutter de videos verticales con fuentes de video separadas,
-persistencia local y temas visuales de temporada.
+TokTik is a Flutter short-video feed with seasonal styling, persistent likes
+and favorites, and Discover, For You, and Favorites sections.
 
-## Funcionalidades
+## Run
 
-- **Temas por temporada:** Normal, Halloween, Christmas y Valentine's Day. El
-  modo automático elige según la fecha del dispositivo (octubre, diciembre y
-  los primeros catorce días de febrero); desde el icono de temporada se puede
-  fijar cualquier tema o volver a Automático. La selección se guarda mediante
-  `SharedPreferences`. Cada tema define colores, iconografía, tipografía del
-  sistema, una señal de audio y una música de inicio original guardada en
-  `assets/audio/`.
-- **Pantalla de inicio:** muestra una bienvenida animada con el tema activo al
-  abrir la aplicación. Reproduce en bucle la música de esa temporada y entra al
-  feed después de unos segundos; también permite activar/desactivar música o
-  entrar inmediatamente. Si el navegador o dispositivo bloquea el audio
-  automático, se puede activar desde el botón en pantalla.
-- **Discover / For You / Favorites:** tres feeds con repositorios separados.
-  Se cambia entre ellos deslizando horizontalmente o usando la navegación
-  inferior; los videos avanzan verticalmente dentro de cada feed. For You ordena
-  por visualizaciones y Favorites contiene los videos guardados con el icono de
-  marcador.
-- **Fuentes y reproducción:** los MP4 directos se reproducen con
-  `video_player`; Vimeo y Dailymotion usan sus reproductores embebidos en
-  `webview_flutter`. Cada fuente tiene su propio datasource y el catálogo las
-  combina antes de que cada repositorio arme su feed. Las listas de ejemplo
-  están en `lib/infrastructure/datasources/`; pueden reemplazarse por peticiones
-  a las APIs correspondientes sin cambiar la presentación.
-- **Me gusta persistente:** el corazón alterna su estado; al activarse suma uno
-  y al desactivarse resta uno. Estado y conteo se almacenan por video en
-  `SharedPreferences`.
-- **Sonido y descripción:** el control de volumen silencia o activa el video.
-  Las descripciones largas muestran `... más`; al expandirlas se pueden
-  desplazar verticalmente. Los sonidos breves asociados a las acciones cambian
-  según el tema y se pueden desactivar desde el icono de volumen superior.
-
-## Ejecutar y probar
-
-Desde `Practica04/toktik`:
+From this directory:
 
 ```sh
 flutter pub get
 flutter run
-flutter test
 ```
+
+At startup, the seasonal splash screen shows the corresponding logo and plays
+the active theme sound while the local and provider feeds are prepared.
+
+The app needs internet access to play YouTube, Vimeo, and Dailymotion videos.
+The provider adapters live in `lib/infrastructure/datasources/`; feed and
+preference contracts are in `lib/domain/`.
+
+## Seasonal themes
+
+The theme uses the device date: February 1–14 selects Valentine's Day, October
+selects Halloween, December selects Christmas, and other dates use the normal
+theme. The logo, palette, typography, and seasonal sound change with the theme.
+
+Use the calendar icon in the app header to choose a simulated date. The date is
+saved in local preferences and remains active after restarting the app. Choose
+**Use device date** to remove the override. Available seasonal sound files are
+under `assets/audios/`; normal and Valentine's Day play generated tone cues.
+
+## Feeds and saved state
+
+- Swipe vertically to move between videos and horizontally to switch feeds.
+- Discover and For You include the eight bundled videos in `assets/videos/` and
+  one video each from YouTube, Vimeo, and Dailymotion.
+- For You orders the same available videos by engagement; Discover keeps the
+  source order.
+- Likes, like counts, and favorites are stored in device preferences.
+- Expand long descriptions with **... más**; expanded text can be scrolled.
+- The volume control is in the action column beside each video.

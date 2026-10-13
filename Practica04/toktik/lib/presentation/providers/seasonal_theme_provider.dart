@@ -1,134 +1,134 @@
 import 'dart:async';
+import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 import 'package:toktik/config/theme/season_theme.dart';
+import 'package:toktik/domain/repositories/seasonal_theme_preferences_repository.dart';
 
 class SeasonalThemeProvider extends ChangeNotifier {
-  static const _themeKey = 'toktik.season_theme';
-  static const _soundKey = 'toktik.season_sounds_enabled';
+  final SeasonalThemePreferencesRepository preferences;
+  final AudioPlayer _audioPlayer;
 
-  SeasonTheme? _manualTheme;
-  bool _soundsEnabled = true;
-  AudioPlayer? _audioPlayer;
-  bool _themeMusicIsPlaying = false;
-  String? soundError;
+  DateTime? simulatedDate;
+  SeasonalTheme activeTheme = SeasonalTheme.forDate(DateTime.now());
+  String? audioError;
+  bool isReady = false;
+  bool _isDisposed = false;
 
-  SeasonTheme get currentTheme => _manualTheme ?? _themeForDate(DateTime.now());
-  SeasonTheme? get manualTheme => _manualTheme;
-  bool get soundsEnabled => _soundsEnabled;
-  bool get isThemeMusicPlaying => _themeMusicIsPlaying;
+  SeasonalThemeProvider({required this.preferences, AudioPlayer? audioPlayer})
+    : _audioPlayer = audioPlayer ?? AudioPlayer();
+
+  DateTime get effectiveDate => simulatedDate ?? DateTime.now();
 
   Future<void> initialize() async {
-    final preferences = await SharedPreferences.getInstance();
-    final savedTheme = preferences.getString(_themeKey);
-    _manualTheme = SeasonTheme.values
-        .where((theme) => theme.name == savedTheme)
-        .firstOrNull;
-    _soundsEnabled = preferences.getBool(_soundKey) ?? true;
+    simulatedDate = preferences.simulatedDate;
+    activeTheme = SeasonalTheme.forDate(effectiveDate);
+    isReady = true;
     notifyListeners();
+    unawaited(_playSeasonSound(activeTheme));
   }
 
-  Future<void> setTheme(SeasonTheme? theme) async {
-    final preferences = await SharedPreferences.getInstance();
-    if (theme == null) {
-      await preferences.remove(_themeKey);
-    } else {
-      await preferences.setString(_themeKey, theme.name);
+  Future<void> setSimulatedDate(DateTime date) async {
+    simulatedDate = DateTime(date.year, date.month, date.day);
+    await preferences.saveSimulatedDate(simulatedDate);
+    await _applyTheme(playSound: true);
+  }
+
+  Future<void> useDeviceDate() async {
+    simulatedDate = null;
+    await preferences.saveSimulatedDate(null);
+    await _applyTheme(playSound: true);
+  }
+
+  Future<void> _applyTheme({required bool playSound}) async {
+    final nextTheme = SeasonalTheme.forDate(effectiveDate);
+    final changed = nextTheme.season != activeTheme.season;
+    activeTheme = nextTheme;
+    audioError = null;
+    notifyListeners();
+
+    if (playSound && changed) {
+      unawaited(_playSeasonSound(nextTheme));
     }
-    _manualTheme = theme;
-    notifyListeners();
   }
 
-  Future<void> setSoundsEnabled(bool enabled) async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(_soundKey, enabled);
-    _soundsEnabled = enabled;
-    if (!enabled) {
-      await stopThemeMusic();
-    }
-    notifyListeners();
-  }
-
-  Future<void> playThemeMusic() async {
-    if (!_soundsEnabled) return;
-    final musicAsset = switch (currentTheme) {
-      SeasonTheme.normal => 'audio/music_normal.wav',
-      SeasonTheme.halloween => 'audio/music_halloween.wav',
-      SeasonTheme.christmas => 'audio/music_christmas.wav',
-      SeasonTheme.valentines => 'audio/music_valentines.wav',
-    };
+  Future<void> _playSeasonSound(SeasonalTheme theme) async {
     try {
-      final player = _audioPlayer ??= AudioPlayer();
-      await player.stop();
-      await player.setReleaseMode(ReleaseMode.loop);
-      await player.play(AssetSource(musicAsset));
-      _themeMusicIsPlaying = true;
-      soundError = null;
+      await _playSeasonSoundNow(theme);
     } catch (error) {
-      _themeMusicIsPlaying = false;
-      soundError = 'No se pudo reproducir la música de inicio: $error';
+      audioError = 'No se pudo reproducir el sonido de temporada: $error';
+      if (!_isDisposed) notifyListeners();
     }
-    notifyListeners();
   }
 
-  Future<void> stopThemeMusic() async {
-    if (!_themeMusicIsPlaying) return;
-    final player = _audioPlayer;
-    if (player == null) return;
-    try {
-      await player.stop();
-      _themeMusicIsPlaying = false;
-    } catch (error) {
-      soundError = 'No se pudo detener la música de inicio: $error';
+  Future<void> _playSeasonSoundNow(SeasonalTheme theme) async {
+    await _audioPlayer.stop();
+    switch (theme.season) {
+      case Season.halloween:
+        await _audioPlayer.play(AssetSource('audios/Sonido risa malvada.mp3'));
+        break;
+      case Season.christmas:
+        await _audioPlayer.play(AssetSource('audios/Sonido navidad.mp3'));
+        break;
+      case Season.valentines:
+        await _audioPlayer.play(BytesSource(_makeJingle([523, 659, 784])));
+        break;
+      case Season.normal:
+        await _audioPlayer.play(BytesSource(_makeJingle([392, 523, 392])));
+        break;
     }
-    notifyListeners();
   }
 
-  Future<void> playThemeSound() async {
-    if (!_soundsEnabled) return;
-    final soundAsset = switch (currentTheme) {
-      SeasonTheme.normal => 'audio/theme_normal.wav',
-      SeasonTheme.halloween => 'audio/theme_halloween.wav',
-      SeasonTheme.christmas => 'audio/theme_christmas.wav',
-      SeasonTheme.valentines => 'audio/theme_valentines.wav',
-    };
-    try {
-      final player = _audioPlayer ??= AudioPlayer();
-      if (_themeMusicIsPlaying) {
-        await player.stop();
-        _themeMusicIsPlaying = false;
+  Uint8List _makeJingle(List<int> notes) {
+    const sampleRate = 22050;
+    const samplesPerNote = sampleRate ~/ 5;
+    final sampleCount = samplesPerNote * notes.length;
+    final data = ByteData(44 + sampleCount * 2);
+    final byteData = data.buffer.asByteData();
+    final bytes = data.buffer.asUint8List();
+
+    void writeAscii(int offset, String value) {
+      for (var i = 0; i < value.length; i++) {
+        bytes[offset + i] = value.codeUnitAt(i);
       }
-      await player.setReleaseMode(ReleaseMode.release);
-      await player.play(AssetSource(soundAsset));
-      soundError = null;
-    } catch (error) {
-      soundError = 'No se pudo reproducir el sonido de temporada: $error';
     }
-    notifyListeners();
-  }
 
-  void clearSoundError() {
-    soundError = null;
-    notifyListeners();
-  }
+    writeAscii(0, 'RIFF');
+    byteData.setUint32(4, 36 + sampleCount * 2, Endian.little);
+    writeAscii(8, 'WAVEfmt ');
+    byteData.setUint32(16, 16, Endian.little);
+    byteData.setUint16(20, 1, Endian.little);
+    byteData.setUint16(22, 1, Endian.little);
+    byteData.setUint32(24, sampleRate, Endian.little);
+    byteData.setUint32(28, sampleRate * 2, Endian.little);
+    byteData.setUint16(32, 2, Endian.little);
+    byteData.setUint16(34, 16, Endian.little);
+    writeAscii(36, 'data');
+    byteData.setUint32(40, sampleCount * 2, Endian.little);
 
-  static SeasonTheme _themeForDate(DateTime date) {
-    if (date.month == DateTime.october) return SeasonTheme.halloween;
-    if (date.month == DateTime.december) return SeasonTheme.christmas;
-    if (date.month == DateTime.february && date.day <= 14) {
-      return SeasonTheme.valentines;
+    var sampleIndex = 0;
+    for (final frequency in notes) {
+      for (var i = 0; i < samplesPerNote; i++, sampleIndex++) {
+        final fade = math
+            .min(i / 300, (samplesPerNote - i) / 300)
+            .clamp(0.0, 1.0);
+        final sample =
+            math.sin(2 * math.pi * frequency * i / sampleRate) * fade * 0.22;
+        byteData.setInt16(
+          44 + sampleIndex * 2,
+          (sample * 32767).round(),
+          Endian.little,
+        );
+      }
     }
-    return SeasonTheme.normal;
+    return bytes;
   }
 
   @override
   void dispose() {
-    final player = _audioPlayer;
-    if (player != null) {
-      unawaited(player.dispose());
-    }
+    _isDisposed = true;
+    _audioPlayer.dispose();
     super.dispose();
   }
 }
