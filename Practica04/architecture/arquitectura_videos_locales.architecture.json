@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TokTik · videos locales",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1390,
+      760
+    ],
+    "legend": {
+      "mode": "all"
+    }
+  },
+  "components": [
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "main() → StartupScreen",
+      "sublabel": "runApp() · startup",
+      "pos": [
+        25,
+        260
+      ],
+      "size": [
+        205,
+        100
+      ]
+    },
+    {
+      "id": "screen",
+      "type": "frontend",
+      "label": "DiscoverScreen",
+      "sublabel": "TabBarView · VideoScrollableView",
+      "pos": [
+        260,
+        260
+      ],
+      "size": [
+        205,
+        100
+      ]
+    },
+    {
+      "id": "feed",
+      "type": "backend",
+      "label": "DiscoverProvider",
+      "sublabel": "loadFeed() · timeout, error / retry",
+      "pos": [
+        495,
+        260
+      ],
+      "size": [
+        205,
+        100
+      ]
+    },
+    {
+      "id": "repo",
+      "type": "backend",
+      "label": "VideoPostsRepositoryImpl",
+      "sublabel": "getVideos() → LocalVideoDatasource",
+      "pos": [
+        730,
+        260
+      ],
+      "size": [
+        205,
+        100
+      ]
+    },
+    {
+      "id": "data",
+      "type": "database",
+      "label": "videoPosts + assets",
+      "sublabel": "LocalVideoModel · 8 MP4 assets",
+      "pos": [
+        965,
+        260
+      ],
+      "size": [
+        205,
+        100
+      ]
+    },
+    {
+      "id": "play",
+      "type": "frontend",
+      "label": "PageView + FullScreenPlayer",
+      "sublabel": "video_player · initialize / play",
+      "pos": [
+        1194,
+        260
+      ],
+      "size": [
+        196,
+        100
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "a",
+      "from": "app",
+      "to": "screen"
+    },
+    {
+      "id": "b",
+      "from": "screen",
+      "to": "feed"
+    },
+    {
+      "id": "c",
+      "from": "feed",
+      "to": "repo"
+    },
+    {
+      "id": "d",
+      "from": "repo",
+      "to": "data"
+    },
+    {
+      "id": "e",
+      "from": "data",
+      "to": "play"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Datos y eventos",
+      "items": [
+        "videoPosts (lib/shared/data/local_video_posts.dart) enumera assets/videos/1.mp4–8.mp4 (declarados en pubspec.yaml); LocalVideoModel.fromJson() los convierte en VideoPost.",
+        "Discover / For You / Favorites comparten fuentes; For You ordena por likes/views y Favorites filtra preferencias.",
+        "PageView vertical selecciona _VideoPage; tocar muestra controles, play/pause y mute actualizan el controlador."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Carga y ciclo de vida",
+      "items": [
+        "DiscoverProvider publica carga, timeout/error y reintento; VideoScrollableView muestra el estado.",
+        "FullScreenPlayer usa VideoPlayerController.asset(videoUrl), inicializa, activa loop y play; FutureBuilder presenta indicador o error. dispose() libera controller y timer al salir."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# Dart and Flutter
+.idea/
+.gradle/
+*.iml
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Platform-specific generated files
+/android/local.properties
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_export_environment.sh
+/ios/Flutter/ephemeral/
+/macos/Flutter/Flutter-Generated.xcconfig
+/macos/Flutter/ephemeral/

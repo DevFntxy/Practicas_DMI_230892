@@ -6,6 +6,18 @@
              the Flutter engine draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
+    <style name="LaunchThemeNormal" parent="LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_normal</item>
+    </style>
+    <style name="LaunchThemeHalloween" parent="LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_halloween</item>
+    </style>
+    <style name="LaunchThemeChristmas" parent="LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_christmas</item>
+    </style>
+    <style name="LaunchThemeValentines" parent="LaunchTheme">
+        <item name="android:windowBackground">@drawable/launch_background_valentines</item>
+    </style>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
          Flutter UI initializes, as well as behind your Flutter UI while its

@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "TokTik · proveedores externos de video",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1300,
+      620
+    ],
+    "legend": {
+      "mode": "all"
+    }
+  },
+  "components": [
+    {
+      "id": "catalog",
+      "type": "frontend",
+      "label": "Feed + VideoPostsRepositoryImpl",
+      "sublabel": "loadFeed() · getVideos() · metadatos fijos",
+      "pos": [
+        30,
+        180
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "yt",
+      "type": "backend",
+      "label": "YouTubeVideoDatasource",
+      "sublabel": "ID y URL fijos · LocalVideoModel",
+      "pos": [
+        350,
+        40
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "vm",
+      "type": "backend",
+      "label": "VimeoVideoDatasource",
+      "sublabel": "ID y URL fijos · LocalVideoModel",
+      "pos": [
+        350,
+        180
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "dm",
+      "type": "backend",
+      "label": "DailymotionVideoDatasource",
+      "sublabel": "ID y URL fijos · LocalVideoModel",
+      "pos": [
+        350,
+        320
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "post",
+      "type": "backend",
+      "label": "VideoPost",
+      "sublabel": "URL · VideoSource · metadatos estáticos",
+      "pos": [
+        670,
+        180
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "player",
+      "type": "frontend",
+      "label": "FullScreenPlayer",
+      "sublabel": "selección por VideoSource / plataforma",
+      "pos": [
+        990,
+        180
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "pod",
+      "type": "frontend",
+      "label": "pod_player (nativo)",
+      "sublabel": "PlayVideoFrom.youtube / .vimeo(ID)",
+      "pos": [
+        990,
+        40
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "frontend",
+      "label": "ProviderVideoEmbed (web)",
+      "sublabel": "HTMLIFrameElement · Uri.https · postMessage",
+      "pos": [
+        990,
+        320
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "resolver",
+      "type": "backend",
+      "label": "DailymotionStreamResolver",
+      "sublabel": "http.Client GET · qualities[].url",
+      "pos": [
+        670,
+        470
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "dmhost",
+      "type": "external",
+      "label": "Dailymotion player metadata",
+      "sublabel": "/player/metadata/video/{id} · JSON",
+      "pos": [
+        350,
+        470
+      ],
+      "size": [
+        250,
+        90
+      ]
+    },
+    {
+      "id": "streamplayer",
+      "type": "frontend",
+      "label": "video_player",
+      "sublabel": "VideoPlayerController.networkUrl(stream)",
+      "pos": [
+        990,
+        470
+      ],
+      "size": [
+        250,
+        90
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "catyt",
+      "from": "catalog",
+      "to": "yt"
+    },
+    {
+      "id": "catvm",
+      "from": "catalog",
+      "to": "vm"
+    },
+    {
+      "id": "catdm",
+      "from": "catalog",
+      "to": "dm"
+    },
+    {
+      "id": "ytpost",
+      "from": "yt",
+      "to": "post"
+    },
+    {
+      "id": "vmpost",
+      "from": "vm",
+      "to": "post"
+    },
+    {
+      "id": "dmpost",
+      "from": "dm",
+      "to": "post"
+    },
+    {
+      "id": "select",
+      "from": "post",
+      "to": "player"
+    },
+    {
+      "id": "native",
+      "from": "player",
+      "to": "pod"
+    },
+    {
+      "id": "web",
+      "from": "player",
+      "to": "embed"
+    },
+    {
+      "id": "resolve",
+      "from": "player",
+      "to": "resolver"
+    },
+    {
+      "id": "http",
+      "from": "resolver",
+      "to": "dmhost"
+    },
+    {
+      "id": "response",
+      "from": "dmhost",
+      "to": "resolver"
+    },
+    {
+      "id": "play",
+      "from": "resolver",
+      "to": "streamplayer"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "YouTube",
+      "items": [
+        "Catálogo fijo · A3ltMaM6noM; sin API ni autenticación.",
+        "Nativo: pod_player PlayVideoFrom.youtube(URL). Web: youtube-nocookie.com/embed/{id} en iframe."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Vimeo",
+      "items": [
+        "Catálogo fijo · 76979871; sin API ni autenticación.",
+        "Nativo: pod_player PlayVideoFrom.vimeo(ID). Web: player.vimeo.com/video/{id} en iframe."
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Dailymotion",
+      "items": [
+        "Catálogo fijo · x7tgad0; sin API ni autenticación.",
+        "Nativo: GET /player/metadata/video/{id}, parsea qualities[].url y reproduce el stream con video_player; timeout 15 s y errores HTTP/JSON se muestran en FullScreenPlayer.",
+        "Web: www.dailymotion.com/embed/video/{id} en iframe. El endpoint de metadata no demuestra una API oficial REST."
+      ]
+    }
+  ]
+}
