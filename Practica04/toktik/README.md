@@ -33,6 +33,21 @@ Al iniciar, la pantalla de bienvenida presenta el logotipo de la temporada y
 reproduce su sonido. El feed comienza a cargar al abrir *Discover*; los sonidos
 normales y de San Valentín se generan en la app.
 
+## Diagramas del flujo de videos
+
+Los diagramas muestran cómo se cargan y reproducen los videos locales y los
+provenientes de YouTube, Vimeo y Dailymotion. Los archivos HTML están en
+[`Practica04/architecture`](../architecture/).
+
+- [Diagrama de videos locales](https://devfntxy.github.io/Practicas_DMI_230892/Practica04/architecture/arquitectura_videos_locales.html)
+  ([archivo en GitHub](https://github.com/DevFntxy/Practicas_DMI_230892/blob/Practica04/Practica04/architecture/arquitectura_videos_locales.html)).
+- [Diagrama de videos de APIs y proveedores externos](https://devfntxy.github.io/Practicas_DMI_230892/Practica04/architecture/arquitectura_videos_externos.html)
+  ([archivo en GitHub](https://github.com/DevFntxy/Practicas_DMI_230892/blob/Practica04/Practica04/architecture/arquitectura_videos_externos.html)).
+
+Las direcciones de GitHub Pages funcionarán cuando la rama que contiene
+`Practica04/architecture/` esté publicada desde la raíz del repositorio. Si
+Pages aún no está habilitado, usa los enlaces a los archivos de GitHub.
+
 ## Fases visuales
 
 El tema se determina usando la fecha del dispositivo. Octubre activa la fase
