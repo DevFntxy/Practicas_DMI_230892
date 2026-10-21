@@ -1,0 +1,22 @@
+services:
+  # Versión web servida con nginx -> http://localhost:8080
+  web:
+    build:
+      context: .
+      target: web
+    image: hello-world-web
+    container_name: hello-world-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  # Compila el APK y lo copia a ./out (solo corre con --profile apk)
+  apk:
+    build:
+      context: .
+      target: build-apk
+    image: hello-world-apk-builder
+    profiles: ["apk"]
+    volumes:
+      - ./out:/out
+    command: ["cp", "/app/build/app/outputs/flutter-apk/app-release.apk", "/out/app-release.apk"]
