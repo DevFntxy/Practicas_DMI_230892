@@ -9,10 +9,9 @@ apariencia según la temporada.
 
 - **Secciones de contenido:** *Discover*, *For You* y *Favorites*. Desliza
   verticalmente para cambiar de video y horizontalmente para cambiar de sección.
-- **Videos locales y en línea:** *Discover* y *For You* incluyen ocho videos
-    de cada proveedor: ` Tik Tok , YouTube, Vimeo y
-  Dailymotion.` *For You* ordena el contenido disponible según la interacción;
-  *Discover* conserva el orden de origen.
+- **Videos locales y en línea:** *Discover* combina los videos locales con
+  contenido de YouTube, Vimeo y Dailymotion. *For You* ordena el contenido
+  disponible según la interacción; *Discover* conserva el orden de origen.
 - **Interacciones:** permite dar y quitar Me gusta, guardar favoritos y
   consultar las reproducciones. Los Me gusta, sus conteos y los favoritos se
   conservan en las preferencias del dispositivo.

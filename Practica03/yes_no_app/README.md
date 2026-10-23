@@ -1,4 +1,4 @@
-# Práctica 03 - Yes No App
+# Yes No App - Práctica 03 
 
 Aplicación Flutter que simula un chat con respuestas aleatorias de tipo sí/no/tal vez, mostrando un mensaje del bot y una imagen GIF relacionada.
 ## Diagrama de arquitectura
