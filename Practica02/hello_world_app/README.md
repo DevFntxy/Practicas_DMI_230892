@@ -1,4 +1,4 @@
-# Hello World App
+# Hello World App - Práctica 02 
 
 ## Diagrama
 
