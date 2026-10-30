@@ -3,6 +3,8 @@
 Aplicación de Flutter para explorar widgets de Material 3, controles de
 interfaz, navegación y manejo de estado con Riverpod.
 
+[Ver diagrama de arquitectura](https://devfntxy.github.io/Practicas_DMI_230892/Practica05/diagrama/diagrama_arquitectura.html)
+
 La captura del menú principal muestra las pantallas disponibles en la aplicación:
 
 <img src="caps/menuPrincipal.jpg" alt="Menú principal de Widgets App" width="320">
