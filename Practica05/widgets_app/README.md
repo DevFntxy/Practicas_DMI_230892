@@ -3,6 +3,8 @@
 Aplicación de Flutter para explorar widgets de Material 3, controles de
 interfaz, navegación y manejo de estado con Riverpod.
 
+[Ver diagrama de arquitectura](https://devfntxy.github.io/Practicas_DMI_230892/Practica05/diagrama/diagrama_arquitectura.html)
+
 La captura del menú principal muestra las pantallas disponibles en la aplicación:
 
 <img src="caps/menuPrincipal.jpg" alt="Menú principal de Widgets App" width="320">
@@ -50,12 +52,21 @@ La pantalla principal presenta un menú para abrir las siguientes demostraciones
 
 - **Tutorial introductorio:** carrusel de tres páginas que permite salir o
   continuar al llegar al final.
+
+  <img src="caps/Tutorial1.png" alt="Primera pantalla del tutorial introductorio" width="320">
+  <img src="caps/Tutorial2.jpeg" alt="Segunda pantalla del tutorial introductorio" width="320">
+  <img src="caps/Tutorial3.jpeg" alt="Tercera pantalla del tutorial introductorio" width="320">
+
 - **Infinite Scroll y Pull to Refresh:** lista de imágenes que agrega elementos
   al desplazarse y se actualiza al arrastrar hacia abajo.
 
   <img src="caps/Screenshot_2026-10-23-11-32-47-913_com.example.widgets_app.jpg" alt="Lista de imágenes en la pantalla de desplazamiento infinito" width="320">
 
 - **Cambiar tema:** selección de color y alternancia entre modo claro y oscuro.
+
+  <img src="caps/CmbiartemaClaro.png" alt="Selector de tema en modo claro" width="320">
+  <img src="caps/CambiarTemaVerde.png" alt="Selector de tema con color verde" width="320">
+  <img src="caps/CambiarTemaObscuro.jpeg" alt="Selector de tema en modo oscuro" width="320">
 
 ## Tecnologías
 
