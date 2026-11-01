@@ -1,17 +1,18 @@
 # cinemapedia
 
-A new Flutter project.
-
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Copy `.env.example` to `.env` and set your TMDB API key:
 
-A few resources to get you started if this is your first Flutter project:
+```text
+THE_MOVIEDB_KEY=your_tmdb_api_key
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+The app can start without a key, but movie data will not load until one is provided.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Then run the app:
+
+```shell
+flutter pub get
+flutter run
+```
