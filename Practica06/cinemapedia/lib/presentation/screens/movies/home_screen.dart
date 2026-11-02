@@ -2,6 +2,7 @@ import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:cinemapedia/presentation/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemapedia/config/localization/app_localizations.dart';
 
 
 
@@ -42,6 +43,12 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(languageProvider, (previous, next) {
+      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+      ref.read(popularMoviesProvider.notifier).loadNextPage();
+      ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+      ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+    });
 
     final initialLoading = ref.watch(initialLoadingProvider);
     if ( initialLoading ) return const FullScreenLoader();
@@ -51,6 +58,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final popularMovies = ref.watch( popularMoviesProvider );
     final topRatedMovies = ref.watch( topRatedMoviesProvider );
     final upcomingMovies = ref.watch( upcomingMoviesProvider );
+    final strings = AppLocalizations.of(context);
 
     return CustomScrollView(
       slivers: [
@@ -74,30 +82,30 @@ class _HomeViewState extends ConsumerState<_HomeView> {
               
                     MovieHorizontalListview(
                       movies: nowPlayingMovies,
-                      title: 'En cines',
-                      subTitle: 'Lunes 20',
+                      title: strings.nowPlaying,
+                      subTitle: strings.monday20,
                       loadNextPage: () =>ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
                       
                     ),
               
                     MovieHorizontalListview(
                       movies: upcomingMovies,
-                      title: 'Próximamente',
-                      subTitle: 'En este mes',
+                      title: strings.comingSoon,
+                      subTitle: strings.thisMonth,
                       loadNextPage: () =>ref.read(upcomingMoviesProvider.notifier).loadNextPage()
                     ),
               
                     MovieHorizontalListview(
                       movies: popularMovies,
-                      title: 'Populares',
+                      title: strings.popular,
                       // subTitle: '',
                       loadNextPage: () =>ref.read(popularMoviesProvider.notifier).loadNextPage()
                     ),
               
                     MovieHorizontalListview(
                       movies: topRatedMovies,
-                      title: 'Mejor calificadas',
-                      subTitle: 'Desde siempre',
+                      title: strings.topRated,
+                      subTitle: strings.allTime,
                       loadNextPage: () =>ref.read(topRatedMoviesProvider.notifier).loadNextPage()
                     ),
 

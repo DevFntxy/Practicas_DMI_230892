@@ -1,3 +1,4 @@
+import 'package:cinemapedia/config/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 
@@ -6,20 +7,22 @@ class CustomBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+
     return BottomNavigationBar(
       elevation: 0,
-      items: const [
+      items: [
         BottomNavigationBarItem(
           icon: Icon( Icons.home_max ),
-          label: 'Inicio'
+          label: strings.home
         ),
         BottomNavigationBarItem(
           icon: Icon( Icons.label_outline ),
-          label: 'Categorías'
+          label: strings.categories
         ),
         BottomNavigationBarItem(
           icon: Icon( Icons.favorite_outline ),
-          label: 'Favoritos'
+          label: strings.favorites
         ),
       ]
     );
