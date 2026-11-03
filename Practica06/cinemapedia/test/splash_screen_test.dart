@@ -63,6 +63,15 @@ void main() {
 
     expect(find.byType(Image), findsOneWidget);
     expect(find.byType(LinearProgressIndicator), findsOneWidget);
+    expect(
+      tester
+          .widget<FadeTransition>(
+            find.byKey(const ValueKey('splash-logo-fade')),
+          )
+          .opacity
+          .value,
+      lessThan(1),
+    );
     expect(find.text('Home reached'), findsNothing);
 
     for (final request in requests) {
@@ -71,6 +80,32 @@ void main() {
 
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump(const Duration(milliseconds: 260));
+    expect(
+      tester
+          .widget<FadeTransition>(
+            find.byKey(const ValueKey('splash-logo-fade')),
+          )
+          .opacity
+          .value,
+      greaterThan(0.9),
+    );
+
+    await tester.pump(const Duration(milliseconds: 360));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 310));
+    expect(
+      tester
+          .widget<FadeTransition>(
+            find.byKey(const ValueKey('splash-exit-fade')),
+          )
+          .opacity
+          .value,
+      greaterThan(0),
+    );
+    expect(find.text('Home reached'), findsNothing);
+
+    await tester.pump(const Duration(milliseconds: 310));
     await tester.pumpAndSettle();
 
     expect(find.text('Home reached'), findsOneWidget);

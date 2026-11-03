@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
     return const Scaffold(
       body: _HomeView(),
       bottomNavigationBar: CustomBottomNavigation(),
+      drawer: AppSidebar(),
     );
   }
 }
@@ -67,6 +68,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       slivers: [
         const SliverAppBar(
           floating: true,
+          automaticallyImplyLeading: false,
           flexibleSpace: FlexibleSpaceBar(title: CustomAppbar()),
         ),
 

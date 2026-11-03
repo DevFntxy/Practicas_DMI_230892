@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
-import 'package:cinemapedia/presentation/screens/screens.dart';
 
 class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
@@ -25,6 +24,14 @@ class CustomAppbar extends ConsumerWidget {
           width: double.infinity,
           child: Row(
             children: [
+              Builder(
+                builder: (context) => IconButton(
+                  tooltip: MaterialLocalizations.of(context)
+                      .openAppDrawerTooltip,
+                  onPressed: Scaffold.of(context).openDrawer,
+                  icon: const Icon(Icons.menu_rounded),
+                ),
+              ),
               Image.asset(
                 'assets/fanso-cinemapedia.png',
                 width: 38,
@@ -36,11 +43,6 @@ class CustomAppbar extends ConsumerWidget {
 
               const Spacer(),
 
-              IconButton(
-                tooltip: strings.settings,
-                onPressed: () => context.pushNamed(LanguageSettingsScreen.name),
-                icon: const Icon(Icons.settings_outlined),
-              ),
               IconButton(
                 tooltip: strings.search,
                 onPressed: () {

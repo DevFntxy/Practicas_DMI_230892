@@ -13,18 +13,43 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
+    with TickerProviderStateMixin {
+  late final AnimationController _logoController;
+  late final AnimationController _exitController;
+  late final Animation<double> _logoOpacity;
+  late final Animation<double> _exitOpacity;
+  bool _introReady = false;
+  bool _dataReady = false;
+  bool _exitStarted = false;
   bool _navigationScheduled = false;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1100),
-    )..repeat(reverse: true);
 
+    _logoController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 560),
+    );
+    _logoOpacity = CurvedAnimation(
+      parent: _logoController,
+      curve: Curves.easeOutCubic,
+    );
+    _exitController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 620),
+    );
+    _exitOpacity = CurvedAnimation(
+      parent: _exitController,
+      curve: Curves.easeInOutCubic,
+    );
+
+    _logoController.forward().then((_) async {
+      await Future<void>.delayed(const Duration(milliseconds: 360));
+      if (!mounted) return;
+      _introReady = true;
+      _maybeOpenHome();
+    });
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
@@ -33,91 +58,105 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _logoController.dispose();
+    _exitController.dispose();
     super.dispose();
   }
 
-  void _openHome() {
-    if (_navigationScheduled) return;
-    _navigationScheduled = true;
+  void _maybeOpenHome() {
+    if (!_introReady || !_dataReady || _exitStarted) return;
+    _exitStarted = true;
+    _exitController.forward().then((_) {
+      if (!mounted || _navigationScheduled) return;
+      _navigationScheduled = true;
+      context.goNamed(HomeScreen.name);
+    });
+  }
+
+  void _openHomeAfterBuild() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) context.goNamed(HomeScreen.name);
+      if (!mounted) return;
+      _dataReady = true;
+      _maybeOpenHome();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen(initialLoadingProvider, (previous, isLoading) {
-      if (!isLoading) _openHome();
+      if (!isLoading) {
+        _dataReady = true;
+        _maybeOpenHome();
+      }
     });
 
-    if (!ref.watch(initialLoadingProvider)) _openHome();
+    if (!ref.watch(initialLoadingProvider) && !_dataReady) {
+      _openHomeAfterBuild();
+    }
 
     final strings = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              colorScheme.surface,
-              colorScheme.surfaceContainer,
-              colorScheme.surface,
-            ],
+      body: FadeTransition(
+        key: const ValueKey('splash-exit-fade'),
+        opacity: ReverseAnimation(_exitOpacity),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: const Alignment(0, -0.2),
+              radius: 1.1,
+              colors: [
+                colorScheme.primary.withValues(alpha: 0.2),
+                colorScheme.surfaceContainer,
+                colorScheme.surface,
+              ],
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ScaleTransition(
-                scale: Tween<double>(begin: 0.97, end: 1).animate(
-                  CurvedAnimation(
-                    parent: _animationController,
-                    curve: Curves.easeInOut,
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: colorScheme.primary.withValues(alpha: 0.18),
-                        blurRadius: 42,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
+          child: Center(
+            child: FadeTransition(
+              key: const ValueKey('splash-logo-fade'),
+              opacity: _logoOpacity,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: colorScheme.primary.withValues(alpha: 0.18),
+                          blurRadius: 42,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
                     child: Image.asset(
                       'assets/fanso-cinemapedia.png',
-                      width: 232,
-                      height: 232,
+                      width: 250,
+                      height: 250,
                       fit: BoxFit.contain,
                       semanticLabel: strings.appName,
                     ),
                   ),
-                ),
+                  const SizedBox(height: 28),
+                  Text(
+                    strings.appName,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: 118,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: const LinearProgressIndicator(minHeight: 3),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 28),
-              Text(
-                strings.appName,
-                style: Theme.of(context).textTheme.headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.4),
-              ),
-              const SizedBox(height: 30),
-              SizedBox(
-                width: 118,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: const LinearProgressIndicator(minHeight: 3),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
