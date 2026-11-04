@@ -20,17 +20,17 @@ Cinemapedia es una aplicación móvil desarrollada con Flutter para explorar pel
 
 | Pantalla de carga | Menú lateral |
 |---|---|
-| <img src="assets/caps/pantallaCarga.png" alt="Pantalla de carga de Cinemapedia" width="250"> | <img src="assets/caps/slidebarFuncionIdioma.png" alt="Menú lateral y acceso a configuración" width="250"> |
+| <img src="assets/caps/pantallaCarga.png" alt="Pantalla de carga de Cinemapedia" width="300"> | <img src="assets/caps/slidebarFuncionIdioma.png" alt="Menú lateral y acceso a configuración" width="300"> |
 
 ### Búsqueda y detalles
 
 | Búsqueda de películas | Resultados de búsqueda |
 |---|---|
-| <img src="assets/caps/funcionBusqueda.png" alt="Búsqueda de películas" width="250"> | <img src="assets/caps/pantallaBusqueda.png" alt="Resultados para la búsqueda de Buddy" width="250"> |
+| <img src="assets/caps/funcionBusqueda.png" alt="Búsqueda de películas" width="300"> | <img src="assets/caps/pantallaBusqueda.png" alt="Resultados para la búsqueda de Buddy" width="300"> |
 
 | Detalle de película y reparto |
 |---|
-| <img src="assets/caps/pantallaActoresBusqueda.png" alt="Detalle de película con sinopsis, géneros y reparto" width="180"> |
+| <img src="assets/caps/pantallaActoresBusqueda.png" alt="Detalle de película con sinopsis, géneros y reparto" width="300"> |
 
 ### Selección de idioma
 
@@ -38,27 +38,27 @@ La aplicación permite elegir español, inglés, alemán o coreano desde Configu
 
 | Español | Inglés |
 |---|---|
-| <img src="assets/caps/idiomaEspa%C3%B1ol.png" alt="Selección de español" width="220"> | <img src="assets/caps/idiomaIngles.png" alt="Selección de inglés" width="250"> |
+| <img src="assets/caps/idiomaEspa%C3%B1ol.png" alt="Selección de español" width="300"> | <img src="assets/caps/idiomaIngles.png" alt="Selección de inglés" width="300"> |
 
 | Alemán | Coreano |
 |---|---|
-| <img src="assets/caps/idiomaAleman.png" alt="Selección de alemán" width="250"> | <img src="assets/caps/idiomaCoreano.png" alt="Selección de coreano" width="250"> |
+| <img src="assets/caps/idiomaAleman.png" alt="Selección de alemán" width="300"> | <img src="assets/caps/idiomaCoreano.png" alt="Selección de coreano" width="300"> |
 
 ### Pantalla de inicio por idioma
 
 | Español | Inglés |
 |---|---|
-| <img src="assets/caps/pantallaEspa%C3%B1ol.png" alt="Pantalla de inicio en español" width="250"> | <img src="assets/caps/pantallaIngles.png" alt="Pantalla de inicio en inglés" width="250"> |
+| <img src="assets/caps/pantallaEspa%C3%B1ol.png" alt="Pantalla de inicio en español" width="300"> | <img src="assets/caps/pantallaIngles.png" alt="Pantalla de inicio en inglés" width="300"> |
 
 | Alemán | Coreano |
 |---|---|
-| <img src="assets/caps/pantallaAleman.png" alt="Pantalla de inicio en alemán" width="250"> | <img src="assets/caps/pantallaCoreano.png" alt="Pantalla de inicio en coreano" width="250"> |
+| <img src="assets/caps/pantallaAleman.png" alt="Pantalla de inicio en alemán" width="300"> | <img src="assets/caps/pantallaCoreano.png" alt="Pantalla de inicio en coreano" width="300"> |
 
 ### Icono instalado
 
 | Cinemapedia instalada | Icono usado para la aplicación |
 |---|---|
-| <img src="assets/caps/appInstalada.png" alt="Cinemapedia instalada en el dispositivo" width="250"> | <img src="assets/fanso-cinemapedia-app-icon.png" alt="Icono de Cinemapedia" width="250"> |
+| <img src="assets/caps/appInstalada.png" alt="Cinemapedia instalada en el dispositivo" width="300"> | <img src="assets/fanso-cinemapedia-app-icon.png" alt="Icono de Cinemapedia" width="300"> |
 
 ## Requisitos
 
