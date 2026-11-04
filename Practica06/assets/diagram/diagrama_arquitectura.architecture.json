@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Diagrama de Arquitectura – Practica06",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/DevFntxy/Practicas_DMI_230892",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "ea3f78579de370558df1ab0ef7110db87cb7dc5c"
+    },
+    "views": [
+      {
+        "id": "presentacion",
+        "label": "Presentación",
+        "focus": [
+          "app",
+          "router",
+          "screens"
+        ]
+      },
+      {
+        "id": "estado",
+        "label": "Estado",
+        "focus": [
+          "screens",
+          "providers",
+          "repos"
+        ]
+      },
+      {
+        "id": "datos",
+        "label": "Datos y TMDB",
+        "focus": [
+          "repos",
+          "data",
+          "entities",
+          "tmdb"
+        ]
+      },
+      {
+        "id": "configuracion",
+        "label": "Configuración",
+        "focus": [
+          "app",
+          "config"
+        ]
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "Inicio / tema",
+      "sublabel": "main.dart · Riverpod",
+      "tag": "Flutter / Riverpod",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/main.dart",
+          "line": 10,
+          "label": "Entrada"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/config/theme/app_theme.dart",
+          "label": "Tema"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/config/localization/app_localizations.dart",
+          "label": "Localización"
+        }
+      ],
+      "row": 0,
+      "col": 0,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        40,
+        60
+      ]
+    },
+    {
+      "id": "router",
+      "type": "frontend",
+      "label": "Rutas",
+      "sublabel": "GoRouter · rutas",
+      "tag": "go_router",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/config/router/app_router.dart",
+          "line": 5
+        }
+      ],
+      "row": 0,
+      "col": 1,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        380,
+        60
+      ]
+    },
+    {
+      "id": "screens",
+      "type": "frontend",
+      "label": "Pantallas y widgets",
+      "sublabel": "Splash · Home · Movie",
+      "tag": "UI Flutter",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/presentation/screens/screens.dart",
+          "label": "Índice"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/presentation/screens/movies/home_screen.dart",
+          "label": "Home"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/presentation/screens/movies/movie_screen.dart",
+          "label": "Movie"
+        }
+      ],
+      "row": 0,
+      "col": 2,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        720,
+        60
+      ]
+    },
+    {
+      "id": "providers",
+      "type": "backend",
+      "label": "Estado",
+      "sublabel": "Riverpod · StateNotifier",
+      "tag": "flutter_riverpod",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/presentation/providers/movies/movies_providers.dart",
+          "label": "Películas"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/presentation/providers/movies/movies_repository_provider.dart",
+          "label": "Repo películas"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/presentation/providers/actors/actors_repository_provider.dart",
+          "label": "Repo actores"
+        }
+      ],
+      "row": 0,
+      "col": 3,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        720,
+        250
+      ]
+    },
+    {
+      "id": "repos",
+      "type": "backend",
+      "label": "Repositorios",
+      "sublabel": "Contratos + implementaciones",
+      "tag": "Dominio + infraestructura",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/domain/repositories/movies_repository.dart",
+          "label": "Contrato películas"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/repositories/movie_repository_impl.dart",
+          "label": "Implementación películas"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/repositories/actor_repository_impl.dart",
+          "label": "Implementación actores"
+        }
+      ],
+      "row": 1,
+      "col": 0,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        380,
+        250
+      ]
+    },
+    {
+      "id": "data",
+      "type": "backend",
+      "label": "Datos TMDB",
+      "sublabel": "Dio · mapeo JSON a entidades",
+      "tag": "HTTP / JSON",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/datasources/moviedb_datasource.dart",
+          "label": "Películas"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/datasources/actor_moviedb_datasource.dart",
+          "label": "Reparto"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/mappers/movie_mapper.dart",
+          "label": "Mapper"
+        }
+      ],
+      "row": 1,
+      "col": 1,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        40,
+        250
+      ]
+    },
+    {
+      "id": "entities",
+      "type": "backend",
+      "label": "Entidades y modelos",
+      "sublabel": "Movie · Actor · respuestas TMDB",
+      "tag": "Dart",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/domain/entities/movie.dart",
+          "label": "Movie"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/domain/entities/actor.dart",
+          "label": "Actor"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/models/moviedb/moviedb_response.dart",
+          "label": "Respuesta API"
+        }
+      ],
+      "row": 1,
+      "col": 2,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        380,
+        460
+      ]
+    },
+    {
+      "id": "tmdb",
+      "type": "external",
+      "label": "The Movie Database",
+      "sublabel": "api.themoviedb.org/3",
+      "tag": "HTTPS / REST",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/lib/infrastructure/datasources/moviedb_datasource.dart",
+          "label": "Endpoints películas"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/config/constants/environment.dart",
+          "label": "Configuración clave"
+        }
+      ],
+      "row": 1,
+      "col": 3,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        40,
+        460
+      ]
+    },
+    {
+      "id": "config",
+      "type": "security",
+      "label": "Configuración",
+      "sublabel": "pubspec · .env",
+      "tag": "SDK Dart ^3.13.2",
+      "sources": [
+        {
+          "path": "Practica06/cinemapedia/pubspec.yaml",
+          "label": "Dependencias"
+        },
+        {
+          "path": "Practica06/cinemapedia/lib/config/constants/environment.dart",
+          "label": "Entorno"
+        }
+      ],
+      "row": 2,
+      "col": 0,
+      "size": [
+        200,
+        78
+      ],
+      "pos": [
+        720,
+        460
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "app-router",
+      "from": "app",
+      "to": "router",
+      "label": "configura"
+    },
+    {
+      "id": "router-screens",
+      "from": "router",
+      "to": "screens",
+      "label": "GoRoute"
+    },
+    {
+      "id": "screens-state",
+      "from": "screens",
+      "to": "providers",
+      "label": "Riverpod",
+      "labelDy": 24
+    },
+    {
+      "id": "state-repo",
+      "from": "providers",
+      "to": "repos",
+      "label": "consulta"
+    },
+    {
+      "id": "repo-ds",
+      "from": "repos",
+      "to": "data",
+      "label": "usa"
+    },
+    {
+      "id": "ds-entity",
+      "from": "data",
+      "to": "entities",
+      "label": "mapea",
+      "labelDy": 24
+    },
+    {
+      "id": "ds-api",
+      "from": "data",
+      "to": "tmdb",
+      "label": "HTTPS",
+      "labelDy": 24
+    }
+  ]
+}
