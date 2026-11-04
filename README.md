@@ -13,3 +13,4 @@ Periodo: Septiembre - Diciembre 2026
 | 2. | [Mi primera Aplicación Móvil con Flutter](https://github.com/DevFntxy/Practicas_DMI_230892/tree/main/Practica02/hello_world_app) | Codificar la app móvil en el framework de Flutter manejando Stateless y Stateful Widgets | 25 | Finalizada |
 | 3. | [yes_no_app](https://github.com/DevFntxy/Practicas_DMI_230892/tree/main/Practica03/yes_no_app) | Desarrollar una aplicación móvil en Flutter que permita responder preguntas mediante una interfaz interactiva de tipo Sí/No | 25 | Finalizada |
 | 4. | [TokTik app](https://github.com/DevFntxy/Practicas_DMI_230892/tree/Practica04/Practica04/toktik) | Aplicación Flutter de videos verticales con feeds, providers y tematización de temporada (Halloween y Navidad) | ?? | En curso |
+| 6. | [Cinemapedia](https://github.com/DevFntxy/Practicas_DMI_230892/tree/Practica06/Practica06/cinemapedia) | Aplicación Flutter para explorar películas usando datos de TMDB | — | — |
