@@ -82,6 +82,42 @@ class LanguageSettingsScreen extends ConsumerWidget {
                     subtitle: Text(strings.southKorea),
                   ),
                 ),
+                Card(
+                  child: RadioListTile<Locale>(
+                    key: const ValueKey('language-fr-FR'),
+                    value: const Locale('fr', 'FR'),
+                    secondary: const Text(
+                      '🇫🇷',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    title: Text(strings.french),
+                    subtitle: Text(strings.france),
+                  ),
+                ),
+                Card(
+                  child: RadioListTile<Locale>(
+                    key: const ValueKey('language-ja-JP'),
+                    value: const Locale('ja', 'JP'),
+                    secondary: const Text(
+                      '🇯🇵',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    title: Text(strings.japanese),
+                    subtitle: Text(strings.japan),
+                  ),
+                ),
+                Card(
+                  child: RadioListTile<Locale>(
+                    key: const ValueKey('language-pt-BR'),
+                    value: const Locale('pt', 'BR'),
+                    secondary: const Text(
+                      '🇧🇷',
+                      style: TextStyle(fontSize: 28),
+                    ),
+                    title: Text(strings.portuguese),
+                    subtitle: Text(strings.brazil),
+                  ),
+                ),
               ],
             ),
           ),

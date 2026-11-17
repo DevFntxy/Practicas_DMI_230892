@@ -5,6 +5,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 
 import 'package:cinemapedia/presentation/providers/providers.dart';
+import 'package:cinemapedia/presentation/widgets/widgets.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const name = 'movie-screen';
@@ -126,6 +127,8 @@ class _MovieDetails extends StatelessWidget {
         ),
 
         _ActorsByMovie(movieId: movie.id.toString()),
+        VideosFromMovie(movieId: movie.id),
+        SimilarMovies(movieId: movie.id),
 
         const SizedBox(height: 50),
       ],

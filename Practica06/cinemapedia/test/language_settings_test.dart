@@ -8,6 +8,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('language setting updates the app language', (tester) async {
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
     await tester.pumpWidget(
       ProviderScope(
         child: Consumer(
@@ -49,5 +54,26 @@ void main() {
     expect(find.text('설정'), findsOneWidget);
     expect(find.text('앱에서 사용할 언어를 선택하세요'), findsOneWidget);
     expect(find.text('🇰🇷'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('language-fr-FR')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Paramètres'), findsOneWidget);
+    expect(find.text('Choisissez la langue de l’application'), findsOneWidget);
+    expect(find.text('🇫🇷'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('language-ja-JP')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('設定'), findsOneWidget);
+    expect(find.text('アプリの言語を選択してください'), findsOneWidget);
+    expect(find.text('🇯🇵'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('language-pt-BR')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Configurações'), findsOneWidget);
+    expect(find.text('Escolha o idioma do aplicativo'), findsOneWidget);
+    expect(find.text('🇧🇷'), findsOneWidget);
   });
 }

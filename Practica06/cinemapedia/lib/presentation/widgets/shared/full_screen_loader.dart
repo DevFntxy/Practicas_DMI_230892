@@ -1,42 +1,34 @@
 import 'package:flutter/material.dart';
-
+import 'package:cinemapedia/config/localization/app_localizations.dart';
 
 class FullScreenLoader extends StatelessWidget {
   const FullScreenLoader({super.key});
-  
-  Stream<String> getLoadingMessages() {
-    final messages = <String>[
-      'Cargando películas',
-      'Comprando palomitas de maíz',
-      'Cargando populares',
-      'Llamando a mi novia',
-      'Ya mero...',
-      'Esto está tardando más de lo esperado :(',
-    ];
 
-    return Stream.periodic( const Duration(milliseconds: 1200), (step) {
+  Stream<String> getLoadingMessages(List<String> messages) {
+    return Stream.periodic(const Duration(milliseconds: 1200), (step) {
       return messages[step];
     }).take(messages.length);
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Espere por favor'),
+          Text(strings.pleaseWait),
           const SizedBox(height: 10),
           const CircularProgressIndicator(strokeWidth: 2),
           const SizedBox(height: 10),
 
           StreamBuilder(
-            stream: getLoadingMessages(),
+            stream: getLoadingMessages(strings.loadingMessages),
             builder: (context, snapshot) {
-              if ( !snapshot.hasData ) return const Text('Cargando...');
-              
-              return Text( snapshot.data! );
+              if (!snapshot.hasData) return Text(strings.loading);
+
+              return Text(snapshot.data!);
             },
           ),
         ],

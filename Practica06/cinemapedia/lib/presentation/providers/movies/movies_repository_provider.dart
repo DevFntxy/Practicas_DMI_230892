@@ -10,6 +10,9 @@ final movieRepositoryProvider = Provider((ref) {
     'en' => 'en-US',
     'de' => 'de-DE',
     'ko' => 'ko-KR',
+    'fr' => 'fr-FR',
+    'ja' => 'ja-JP',
+    'pt' => 'pt-BR',
     _ => 'es-MX',
   };
   return MovieRepositoryImpl(MoviedbDatasource(language: language));

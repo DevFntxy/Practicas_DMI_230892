@@ -1,9 +1,11 @@
 import 'package:cinemapedia/config/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
-  const CustomBottomNavigation({super.key});
+  final int currentIndex;
+
+  const CustomBottomNavigation({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -11,20 +13,25 @@ class CustomBottomNavigation extends StatelessWidget {
 
     return BottomNavigationBar(
       elevation: 0,
+      currentIndex: currentIndex,
+      onTap: (index) {
+        final locations = ['/', '/categories', '/favorites'];
+        context.go(locations[index]);
+      },
       items: [
         BottomNavigationBarItem(
-          icon: Icon( Icons.home_max ),
-          label: strings.home
+          icon: const Icon(Icons.home_max),
+          label: strings.home,
         ),
         BottomNavigationBarItem(
-          icon: Icon( Icons.label_outline ),
-          label: strings.categories
+          icon: const Icon(Icons.label_outline),
+          label: strings.categories,
         ),
         BottomNavigationBarItem(
-          icon: Icon( Icons.favorite_outline ),
-          label: strings.favorites
+          icon: const Icon(Icons.favorite_outline),
+          label: strings.favorites,
         ),
-      ]
+      ],
     );
   }
 }

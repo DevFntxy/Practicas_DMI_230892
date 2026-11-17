@@ -31,4 +31,38 @@ class Movie {
     required this.voteAverage,
     required this.voteCount
   });
+
+  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
+        adult: json['adult'] as bool,
+        backdropPath: json['backdropPath'] as String,
+        genreIds: List<String>.from(json['genreIds'] as List),
+        id: json['id'] as int,
+        originalLanguage: json['originalLanguage'] as String,
+        originalTitle: json['originalTitle'] as String,
+        overview: json['overview'] as String,
+        popularity: (json['popularity'] as num).toDouble(),
+        posterPath: json['posterPath'] as String,
+        releaseDate: DateTime.parse(json['releaseDate'] as String),
+        title: json['title'] as String,
+        video: json['video'] as bool,
+        voteAverage: (json['voteAverage'] as num).toDouble(),
+        voteCount: json['voteCount'] as int,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'adult': adult,
+        'backdropPath': backdropPath,
+        'genreIds': genreIds,
+        'id': id,
+        'originalLanguage': originalLanguage,
+        'originalTitle': originalTitle,
+        'overview': overview,
+        'popularity': popularity,
+        'posterPath': posterPath,
+        'releaseDate': releaseDate.toIso8601String(),
+        'title': title,
+        'video': video,
+        'voteAverage': voteAverage,
+        'voteCount': voteCount,
+      };
 }

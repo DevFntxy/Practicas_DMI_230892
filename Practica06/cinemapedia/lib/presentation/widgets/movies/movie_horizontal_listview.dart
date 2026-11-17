@@ -2,6 +2,7 @@ import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/presentation/widgets/movies/favorite_movie_button.dart';
 import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
@@ -93,25 +94,40 @@ class _Slide extends StatelessWidget {
             height: 232,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                movie.posterPath,
-                fit: BoxFit.cover,
-                width: 154,
-                height: 232,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress != null) {
-                    return ColoredBox(
+              child: Stack(
+                children: [
+                  Image.network(
+                    movie.posterPath,
+                    fit: BoxFit.cover,
+                    width: 154,
+                    height: 232,
+                    errorBuilder: (context, error, stackTrace) => ColoredBox(
                       color: Theme.of(context).colorScheme.surfaceContainer,
                       child: const Center(
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: Icon(Icons.movie_outlined, size: 40),
                       ),
-                    );
-                  }
-                  return GestureDetector(
-                    onTap: () => context.push('/movie/${movie.id}'),
-                    child: FadeIn(child: child),
-                  );
-                },
+                    ),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress != null) {
+                        return ColoredBox(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          child: const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        );
+                      }
+                      return GestureDetector(
+                        onTap: () => context.push('/movie/${movie.id}'),
+                        child: FadeIn(child: child),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: FavoriteMovieButton(movie: movie),
+                  ),
+                ],
               ),
             ),
           ),

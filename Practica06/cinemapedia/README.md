@@ -6,7 +6,7 @@ Cinemapedia es una aplicación móvil desarrollada con Flutter para explorar pel
 
 - Catálogos de películas en cartelera, próximas, populares y mejor valoradas.
 - Búsqueda de películas y vista de detalles con sinopsis, géneros y reparto.
-- Interfaz disponible en español, inglés, alemán y coreano.
+- Interfaz disponible en español, inglés, alemán, coreano, francés, japonés y portugués.
 - Pantalla de configuración para cambiar el idioma de la aplicación.
 - Navegación con `go_router` y estado administrado con Riverpod.
 
@@ -34,7 +34,7 @@ Cinemapedia es una aplicación móvil desarrollada con Flutter para explorar pel
 
 ### Selección de idioma
 
-La aplicación permite elegir español, inglés, alemán o coreano desde Configuración:
+La aplicación permite elegir español, inglés, alemán, coreano, francés, japonés o portugués desde Configuración. El idioma elegido también se envía a TMDB para recibir los títulos, sinopsis, géneros y datos del reparto localizados:
 
 | Español | Inglés |
 |---|---|

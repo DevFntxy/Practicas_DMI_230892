@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import 'package:cinemapedia/presentation/screens/screens.dart';
+import 'package:cinemapedia/presentation/views/views.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/splash',
@@ -26,6 +27,16 @@ final appRouter = GoRouter(
       path: '/settings/language',
       name: LanguageSettingsScreen.name,
       builder: (context, state) => const LanguageSettingsScreen(),
+    ),
+    GoRoute(
+      path: '/categories',
+      name: CategoriesScreen.name,
+      builder: (context, state) => const CategoriesScreen(),
+    ),
+    GoRoute(
+      path: '/favorites',
+      name: FavoritesView.name,
+      builder: (context, state) => const FavoritesView(),
     ),
   ],
 );

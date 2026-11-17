@@ -7,6 +7,9 @@ import 'package:cinemapedia/infrastructure/mappers/movie_mapper.dart';
 import 'package:cinemapedia/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemapedia/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/domain/entities/video.dart';
+import 'package:cinemapedia/infrastructure/mappers/video_mapper.dart';
+import 'package:cinemapedia/infrastructure/models/moviedb/moviedb_videos.dart';
 
 class MoviedbDatasource extends MoviesDatasource {
   final Dio dio;
@@ -90,5 +93,24 @@ class MoviedbDatasource extends MoviesDatasource {
     );
 
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getSimilarMovies(int movieId) async {
+    final response = await dio.get('/movie/$movieId/similar');
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Video>> getYoutubeVideosById(int movieId) async {
+    final response = await dio.get('/movie/$movieId/videos');
+    final moviedbVideosResponse = MoviedbVideosResponse.fromJson(response.data);
+
+    final videos = moviedbVideosResponse.results
+        .where((video) => video.site == 'YouTube')
+        .map(VideoMapper.moviedbVideoToEntity)
+        .toList();
+
+    return videos.cast<Video>();
   }
 }
