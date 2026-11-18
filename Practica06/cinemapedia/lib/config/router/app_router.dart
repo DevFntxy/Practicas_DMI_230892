@@ -34,6 +34,20 @@ final appRouter = GoRouter(
       builder: (context, state) => const CategoriesScreen(),
     ),
     GoRoute(
+      path: '/series',
+      name: SeriesScreen.name,
+      builder: (context, state) => const SeriesScreen(),
+      routes: [
+        GoRoute(
+          path: ':id',
+          name: SeriesDetailScreen.name,
+          builder: (context, state) => SeriesDetailScreen(
+            seriesId: state.pathParameters['id']!,
+          ),
+        ),
+      ],
+    ),
+    GoRoute(
       path: '/favorites',
       name: FavoritesView.name,
       builder: (context, state) => const FavoritesView(),

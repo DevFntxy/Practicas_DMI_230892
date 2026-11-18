@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:cinemapedia/domain/entities/entities.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:cinemapedia/config/localization/app_localizations.dart';
 
 
 final videosFromMovieProvider =
@@ -23,18 +24,41 @@ class VideosFromMovie extends ConsumerWidget {
     final moviesFromVideo = ref.watch(videosFromMovieProvider(movieId));
 
     return moviesFromVideo.when(
-      data: ( videos ) => _VideosList( videos: videos ),
+      data: ( videos ) => YouTubeVideosSection(videos: videos),
       error: (_, _) => const Center(child: Text('No se pudo cargar videos')),
       loading: () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 }
 
-class _VideosList extends StatelessWidget {
+class VideosFromSeries extends ConsumerWidget {
+  final int seriesId;
+
+  const VideosFromSeries({super.key, required this.seriesId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final videos = ref.watch(seriesVideosProvider(seriesId));
+
+    return videos.when(
+      data: (items) => YouTubeVideosSection(videos: items),
+      error: (_, _) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text(AppLocalizations.of(context).failedToLoadVideos),
+      ),
+      loading: () => const Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      ),
+    );
+  }
+}
+
+class YouTubeVideosSection extends StatelessWidget {
 
   final List<Video> videos;
 
-  const _VideosList({required this.videos });
+  const YouTubeVideosSection({super.key, required this.videos});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +74,10 @@ class _VideosList extends StatelessWidget {
         // ignore: prefer_const_constructors
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: const Text('Videos', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+          child: Text(
+            AppLocalizations.of(context).videos,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ),
         
         //* Aunque tengo varios videos, sólo quiero mostrar el primero
@@ -65,7 +92,7 @@ class _VideosList extends StatelessWidget {
   }
 }
 
-class _YouTubeVideoPlayer extends StatefulWidget {
+class _YouTubeVideoPlayer extends StatelessWidget {
 
   final String youtubeId;
   final String name;
@@ -73,52 +100,51 @@ class _YouTubeVideoPlayer extends StatefulWidget {
   const _YouTubeVideoPlayer({ required this.youtubeId, required this.name });
 
   @override
-  State<_YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
-}
-
-class _YouTubeVideoPlayerState extends State<_YouTubeVideoPlayer> {
-
-  late YoutubePlayerController _controller;  
-
-  @override
-  void initState() {
-    super.initState();
-    
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.youtubeId,
-      flags: const YoutubePlayerFlags(
-        hideThumbnail: true,
-        showLiveFullscreenButton: false,
-        mute: false,
-        autoPlay: false,
-        disableDragSeek: true,
-        loop: false,
-        isLive: false,
-        forceHD: false,
-        enableCaption: false,
-      ),
-    );
-  }
-
-
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final thumbnailUrl =
+        'https://img.youtube.com/vi/$youtubeId/hqdefault.jpg';
+    final videoUrl = Uri.parse('https://www.youtube.com/watch?v=$youtubeId');
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.name),
-          YoutubePlayer(controller: _controller)
+          Text(name),
+          const SizedBox(height: 8),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Material(
+              clipBehavior: Clip.antiAlias,
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.black,
+              child: InkWell(
+                onTap: () => launchUrl(
+                  videoUrl,
+                  mode: LaunchMode.externalApplication,
+                ),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.network(
+                      thumbnailUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) =>
+                          const ColoredBox(color: Colors.black),
+                    ),
+                    const Center(
+                      child: Icon(
+                        Icons.play_circle_fill,
+                        size: 64,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
-      )
+      ),
     );
   }
 }

@@ -19,7 +19,7 @@ class FavoritesView extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Favoritos')),
       drawer: const AppSidebar(),
-      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 2),
+      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 3),
       body: favorites.isEmpty
           ? const _EmptyFavorites()
           : _FavoritesGrid(favorites: favorites),

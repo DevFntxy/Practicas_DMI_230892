@@ -1,34 +1,36 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/domain/entities/catalog_search_result.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
 
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
 final searchedMoviesProvider =
-    StateNotifierProvider<SearchedMoviesNotifier, List<Movie>>((ref) {
-      final movieRepository = ref.watch(movieRepositoryProvider);
+    StateNotifierProvider<SearchedMoviesNotifier, List<CatalogSearchResult>>((ref) {
+      final catalogRepository = ref.watch(catalogSearchRepositoryProvider);
 
       return SearchedMoviesNotifier(
-        searchMovies: movieRepository.searchMovies,
+        searchMovies: catalogRepository.searchCatalog,
         ref: ref,
       );
     });
 
-typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
+typedef SearchMoviesCallback = Future<List<CatalogSearchResult>> Function(
+  String query,
+);
 
-class SearchedMoviesNotifier extends StateNotifier<List<Movie>> {
+class SearchedMoviesNotifier extends StateNotifier<List<CatalogSearchResult>> {
   final SearchMoviesCallback searchMovies;
   final Ref ref;
 
   SearchedMoviesNotifier({required this.searchMovies, required this.ref})
     : super([]);
 
-  Future<List<Movie>> searchMoviesByQuery(String query) async {
-    final List<Movie> movies = await searchMovies(query);
+  Future<List<CatalogSearchResult>> searchMoviesByQuery(String query) async {
+    final results = await searchMovies(query);
     ref.read(searchQueryProvider.notifier).update((state) => query);
 
-    state = movies;
-    return movies;
+    state = results;
+    return results;
   }
 }

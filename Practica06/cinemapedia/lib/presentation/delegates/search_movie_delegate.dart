@@ -3,27 +3,34 @@ import 'dart:async';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/domain/entities/catalog_search_result.dart';
+import 'package:cinemapedia/config/localization/app_localizations.dart';
 
-typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
+typedef SearchMoviesCallback = Future<List<CatalogSearchResult>> Function(
+  String query,
+);
 
-class SearchMovieDelegate extends SearchDelegate<Movie?> {
+class SearchMovieDelegate extends SearchDelegate<CatalogSearchResult?> {
   final SearchMoviesCallback searchMovies;
-  List<Movie> initialMovies;
+  List<CatalogSearchResult> initialMovies;
+  final String searchLabel;
 
-  StreamController<List<Movie>> debouncedMovies = StreamController.broadcast();
+  StreamController<List<CatalogSearchResult>> debouncedMovies =
+      StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
 
   Timer? _debounceTimer;
 
-  SearchMovieDelegate({required this.searchMovies, required this.initialMovies})
-    : super(
-        searchFieldLabel: 'Buscar películas',
-        // textInputAction: TextInputAction.done
-      );
+  SearchMovieDelegate({
+    required this.searchMovies,
+    required this.initialMovies,
+    required this.searchLabel,
+  }) : super(searchFieldLabel: searchLabel);
 
   void clearStreams() {
-    debouncedMovies.close();
+    _debounceTimer?.cancel();
+    if (!debouncedMovies.isClosed) debouncedMovies.close();
+    if (!isLoadingStream.isClosed) isLoadingStream.close();
   }
 
   void _onQueryChanged(String query) {
@@ -32,15 +39,24 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      // if ( query.isEmpty ) {
-      //   debouncedMovies.add([]);
-      //   return;
-      // }
+      if (query.trim().isEmpty) {
+        initialMovies = [];
+        if (!debouncedMovies.isClosed) debouncedMovies.add([]);
+        if (!isLoadingStream.isClosed) isLoadingStream.add(false);
+        return;
+      }
 
-      final movies = await searchMovies(query);
-      initialMovies = movies;
-      debouncedMovies.add(movies);
-      isLoadingStream.add(false);
+      try {
+        final results = await searchMovies(query);
+        initialMovies = results;
+        if (!debouncedMovies.isClosed) debouncedMovies.add(results);
+      } catch (error, stackTrace) {
+        if (!debouncedMovies.isClosed) {
+          debouncedMovies.addError(error, stackTrace);
+        }
+      } finally {
+        if (!isLoadingStream.isClosed) isLoadingStream.add(false);
+      }
     });
   }
 
@@ -49,15 +65,25 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       initialData: initialMovies,
       stream: debouncedMovies.stream,
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(AppLocalizations.of(context).searchFailed),
+          );
+        }
         final movies = snapshot.data ?? [];
+        if (movies.isEmpty && query.trim().isNotEmpty) {
+          return Center(
+            child: Text(AppLocalizations.of(context).noSearchResults),
+          );
+        }
 
         return ListView.builder(
           itemCount: movies.length,
-          itemBuilder: (context, index) => _MovieItem(
-            movie: movies[index],
-            onMovieSelected: (context, movie) {
+          itemBuilder: (context, index) => _CatalogItem(
+            result: movies[index],
+            onResultSelected: (context, result) {
               clearStreams();
-              close(context, movie);
+              close(context, result);
             },
           ),
         );
@@ -117,25 +143,33 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    _onQueryChanged(query);
+    if (query != _lastQuery) {
+      _lastQuery = query;
+      _onQueryChanged(query);
+    }
     return buildResultsAndSuggestions();
   }
+
+  String _lastQuery = '';
 }
 
-class _MovieItem extends StatelessWidget {
-  final Movie movie;
-  final Function onMovieSelected;
+class _CatalogItem extends StatelessWidget {
+  final CatalogSearchResult result;
+  final void Function(BuildContext, CatalogSearchResult) onResultSelected;
 
-  const _MovieItem({required this.movie, required this.onMovieSelected});
+  const _CatalogItem({
+    required this.result,
+    required this.onResultSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
+    final strings = AppLocalizations.of(context);
 
     return GestureDetector(
       onTap: () {
-        onMovieSelected(context, movie);
+        onResultSelected(context, result);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -143,13 +177,18 @@ class _MovieItem extends StatelessWidget {
           children: [
             // Image
             SizedBox(
-              width: size.width * 0.2,
+              width: 76,
+              height: 112,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  movie.posterPath,
+                  result.posterPath,
+                  fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) =>
                       FadeIn(child: child),
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.image_not_supported_outlined,
+                  ),
                 ),
               ),
             ),
@@ -157,16 +196,35 @@ class _MovieItem extends StatelessWidget {
             const SizedBox(width: 10),
 
             // Description
-            SizedBox(
-              width: size.width * 0.7,
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(movie.title, style: textStyles.titleMedium),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          result.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyles.titleMedium,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Chip(
+                        label: Text(
+                          result.isSeries ? strings.series : strings.movies,
+                        ),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    ],
+                  ),
 
-                  (movie.overview.length > 100)
-                      ? Text('${movie.overview.substring(0, 100)}...')
-                      : Text(movie.overview),
+                  Text(
+                    result.overview,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
 
                   Row(
                     children: [
@@ -176,7 +234,7 @@ class _MovieItem extends StatelessWidget {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        HumanFormats.number(movie.voteAverage, 1),
+                        HumanFormats.number(result.voteAverage, 1),
                         style: textStyles.bodyMedium!.copyWith(
                           color: Colors.yellow.shade900,
                         ),

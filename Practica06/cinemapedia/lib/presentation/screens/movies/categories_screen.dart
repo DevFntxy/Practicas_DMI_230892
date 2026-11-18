@@ -33,7 +33,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
               ),
       ),
       drawer: const AppSidebar(),
-      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 1),
+      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 2),
       body: _selectedGenre == null
           ? _buildGenres()
           : _buildMovies(_selectedGenre!),

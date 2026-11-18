@@ -182,6 +182,186 @@ class AppLocalizations {
     japanese: 'お気に入り',
     portuguese: 'Favoritos',
   );
+  String get series => _localized(
+    spanish: 'Series',
+    english: 'TV Shows',
+    german: 'Serien',
+    korean: '시리즈',
+    french: 'Séries',
+    japanese: 'シリーズ',
+    portuguese: 'Séries',
+  );
+  String get movies => _localized(
+    spanish: 'Películas',
+    english: 'Movies',
+    german: 'Filme',
+    korean: '영화',
+    french: 'Films',
+    japanese: '映画',
+    portuguese: 'Filmes',
+  );
+  String get searchMoviesAndSeries => _localized(
+    spanish: 'Buscar películas y series',
+    english: 'Search movies and TV shows',
+    german: 'Filme und Serien suchen',
+    korean: '영화 및 시리즈 검색',
+    french: 'Rechercher des films et des séries',
+    japanese: '映画やシリーズを検索',
+    portuguese: 'Buscar filmes e séries',
+  );
+  String get trendingSeries => _localized(
+    spanish: 'Tendencias',
+    english: 'Trending',
+    german: 'Im Trend',
+    korean: '인기 급상승',
+    french: 'Tendances',
+    japanese: '話題',
+    portuguese: 'Em alta',
+  );
+  String get popularSeries => _localized(
+    spanish: 'Populares',
+    english: 'Popular',
+    german: 'Beliebt',
+    korean: '인기',
+    french: 'Populaires',
+    japanese: '人気',
+    portuguese: 'Populares',
+  );
+  String get onTheAirSeries => _localized(
+    spanish: 'En emisión',
+    english: 'On the air',
+    german: 'Aktuell im TV',
+    korean: '방영 중',
+    french: 'En cours',
+    japanese: '放送中',
+    portuguese: 'No ar',
+  );
+  String get noSeriesAvailable => _localized(
+    spanish: 'No hay series disponibles en esta sección.',
+    english: 'No TV shows are available in this section.',
+    german: 'In diesem Bereich sind keine Serien verfügbar.',
+    korean: '이 섹션에 시리즈가 없습니다.',
+    french: 'Aucune série disponible dans cette section.',
+    japanese: 'このセクションにシリーズはありません。',
+    portuguese: 'Não há séries disponíveis nesta seção.',
+  );
+  String get failedToLoadSeries => _localized(
+    spanish: 'No se pudieron cargar las series.',
+    english: 'Could not load TV shows.',
+    german: 'Serien konnten nicht geladen werden.',
+    korean: '시리즈를 불러오지 못했습니다.',
+    french: 'Impossible de charger les séries.',
+    japanese: 'シリーズを読み込めませんでした。',
+    portuguese: 'Não foi possível carregar as séries.',
+  );
+  String get retry => _localized(
+    spanish: 'Reintentar',
+    english: 'Try again',
+    german: 'Erneut versuchen',
+    korean: '다시 시도',
+    french: 'Réessayer',
+    japanese: '再試行',
+    portuguese: 'Tentar novamente',
+  );
+  String get noSearchResults => _localized(
+    spanish: 'No encontramos películas ni series con ese nombre.',
+    english: 'No movies or TV shows matched your search.',
+    german: 'Keine Filme oder Serien für diese Suche gefunden.',
+    korean: '검색 결과가 없습니다.',
+    french: 'Aucun film ou série ne correspond à votre recherche.',
+    japanese: '一致する映画やシリーズが見つかりません。',
+    portuguese: 'Nenhum filme ou série corresponde à sua busca.',
+  );
+  String get searchFailed => _localized(
+    spanish: 'No se pudo completar la búsqueda. Inténtalo de nuevo.',
+    english: 'Search failed. Please try again.',
+    german: 'Suche fehlgeschlagen. Bitte erneut versuchen.',
+    korean: '검색에 실패했습니다. 다시 시도해 주세요.',
+    french: 'La recherche a échoué. Réessayez.',
+    japanese: '検索に失敗しました。もう一度お試しください。',
+    portuguese: 'A busca falhou. Tente novamente.',
+  );
+  String get descriptionUnavailable => _localized(
+    spanish: 'No hay descripción disponible.',
+    english: 'No description available.',
+    german: 'Keine Beschreibung verfügbar.',
+    korean: '설명이 없습니다.',
+    french: 'Aucune description disponible.',
+    japanese: '説明はありません。',
+    portuguese: 'Nenhuma descrição disponível.',
+  );
+  String get cast => _localized(
+    spanish: 'Reparto',
+    english: 'Cast',
+    german: 'Besetzung',
+    korean: '출연진',
+    french: 'Distribution',
+    japanese: '出演者',
+    portuguese: 'Elenco',
+  );
+  String get videos => _localized(
+    spanish: 'Tráilers y videos',
+    english: 'Trailers and videos',
+    german: 'Trailer und Videos',
+    korean: '예고편 및 동영상',
+    french: 'Bandes-annonces et vidéos',
+    japanese: '予告編・動画',
+    portuguese: 'Trailers e vídeos',
+  );
+  String get firstAirDate => _localized(
+    spanish: 'Estreno:',
+    english: 'First aired:',
+    german: 'Erstausstrahlung:',
+    korean: '첫 방영:',
+    french: 'Première diffusion :',
+    japanese: '初回放送：',
+    portuguese: 'Estreia:',
+  );
+  String get recommendations => _localized(
+    spanish: 'Recomendaciones',
+    english: 'Recommendations',
+    german: 'Empfehlungen',
+    korean: '추천',
+    french: 'Recommandations',
+    japanese: 'おすすめ',
+    portuguese: 'Recomendações',
+  );
+  String get failedToLoadCast => _localized(
+    spanish: 'No se pudo cargar el reparto.',
+    english: 'Could not load the cast.',
+    german: 'Besetzung konnte nicht geladen werden.',
+    korean: '출연진을 불러오지 못했습니다.',
+    french: 'Impossible de charger la distribution.',
+    japanese: '出演者を読み込めませんでした。',
+    portuguese: 'Não foi possível carregar o elenco.',
+  );
+  String get failedToLoadVideos => _localized(
+    spanish: 'No se pudieron cargar los tráilers.',
+    english: 'Could not load trailers.',
+    german: 'Trailer konnten nicht geladen werden.',
+    korean: '예고편을 불러오지 못했습니다.',
+    french: 'Impossible de charger les bandes-annonces.',
+    japanese: '予告編を読み込めませんでした。',
+    portuguese: 'Não foi possível carregar os trailers.',
+  );
+  String get failedToLoadRecommendations => _localized(
+    spanish: 'No se pudieron cargar las recomendaciones.',
+    english: 'Could not load recommendations.',
+    german: 'Empfehlungen konnten nicht geladen werden.',
+    korean: '추천 콘텐츠를 불러오지 못했습니다.',
+    french: 'Impossible de charger les recommandations.',
+    japanese: 'おすすめを読み込めませんでした。',
+    portuguese: 'Não foi possível carregar as recomendações.',
+  );
+  String seasonsAndEpisodes(int seasons, int episodes) => _localized(
+    spanish: '$seasons temporadas · $episodes episodios',
+    english: '$seasons seasons · $episodes episodes',
+    german: '$seasons Staffeln · $episodes Folgen',
+    korean: '시즌 $seasons개 · 에피소드 $episodes개',
+    french: '$seasons saisons · $episodes épisodes',
+    japanese: '$seasonsシーズン · $episodes話',
+    portuguese: '$seasons temporadas · $episodes episódios',
+  );
   String get nowPlaying => _localized(
     spanish: 'En cines',
     english: 'Now playing',

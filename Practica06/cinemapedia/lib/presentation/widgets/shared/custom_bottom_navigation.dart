@@ -15,13 +15,17 @@ class CustomBottomNavigation extends StatelessWidget {
       elevation: 0,
       currentIndex: currentIndex,
       onTap: (index) {
-        final locations = ['/', '/categories', '/favorites'];
+        final locations = ['/', '/series', '/categories', '/favorites'];
         context.go(locations[index]);
       },
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home_max),
           label: strings.home,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.live_tv_outlined),
+          label: strings.series,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.label_outline),

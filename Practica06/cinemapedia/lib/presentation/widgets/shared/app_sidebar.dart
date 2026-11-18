@@ -1,5 +1,6 @@
 import 'package:cinemapedia/config/localization/app_localizations.dart';
 import 'package:cinemapedia/presentation/screens/movies/home_screen.dart';
+import 'package:cinemapedia/presentation/screens/series/series_screen.dart';
 import 'package:cinemapedia/presentation/screens/settings/language_settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -53,6 +54,17 @@ class AppSidebar extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 context.goNamed(HomeScreen.name);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.live_tv_outlined),
+              title: Text(strings.series),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                context.goNamed(SeriesScreen.name);
               },
             ),
             const Spacer(),
