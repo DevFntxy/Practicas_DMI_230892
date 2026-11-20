@@ -9,13 +9,16 @@ import 'package:cinemapedia/config/theme/app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<void> main() async{
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: '.env');
+  try {
+    await dotenv.load(fileName: '.env');
+  } catch (_) {
+    // Without this asset, the app can still open and show its network state.
+  }
 
-  runApp(
-    const ProviderScope(child: MainApp() )
-  );
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends ConsumerWidget {

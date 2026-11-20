@@ -100,6 +100,10 @@ La aplicación permite elegir español, inglés, alemán, coreano, francés, jap
 
 ## Configuración y ejecución
 
+### Descargar APK
+
+- [Descargar Cinemapedia APK](releases/cinemapedia.apk)
+
 Desde la raíz del repositorio, entra al proyecto:
 
 ```shell

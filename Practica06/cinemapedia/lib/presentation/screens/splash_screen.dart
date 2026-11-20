@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cinemapedia/config/localization/app_localizations.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:cinemapedia/presentation/screens/movies/home_screen.dart';
@@ -22,6 +24,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   bool _dataReady = false;
   bool _exitStarted = false;
   bool _navigationScheduled = false;
+  Timer? _fallbackTimer;
 
   @override
   void initState() {
@@ -50,6 +53,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       _introReady = true;
       _maybeOpenHome();
     });
+    _fallbackTimer = Timer(const Duration(seconds: 12), () {
+      if (!mounted) return;
+      _dataReady = true;
+      _maybeOpenHome();
+    });
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
     ref.read(popularMoviesProvider.notifier).loadNextPage();
     ref.read(topRatedMoviesProvider.notifier).loadNextPage();
@@ -58,6 +66,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   @override
   void dispose() {
+    _fallbackTimer?.cancel();
     _logoController.dispose();
     _exitController.dispose();
     super.dispose();
