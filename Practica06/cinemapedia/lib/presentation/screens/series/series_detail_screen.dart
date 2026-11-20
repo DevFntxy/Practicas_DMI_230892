@@ -57,6 +57,7 @@ class _SeriesDetails extends StatelessWidget {
         SliverAppBar(
           expandedHeight: 320,
           pinned: true,
+          actions: [FavoriteSeriesButton(series: series)],
           flexibleSpace: FlexibleSpaceBar(
             title: Text(
               series.name,
@@ -89,12 +90,11 @@ class _SeriesDetails extends StatelessWidget {
                       child: Image.network(
                         series.posterPath,
                         width: size.width * 0.3,
-                        errorBuilder: (context, error, stackTrace) =>
-                            SizedBox(
-                              width: size.width * 0.3,
-                              height: size.width * 0.45,
-                              child: const Icon(Icons.live_tv_outlined),
-                            ),
+                        errorBuilder: (context, error, stackTrace) => SizedBox(
+                          width: size.width * 0.3,
+                          height: size.width * 0.45,
+                          child: const Icon(Icons.live_tv_outlined),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -129,9 +129,8 @@ class _SeriesDetails extends StatelessWidget {
                                   Flexible(
                                     child: Text(
                                       DateFormat.yMMMd(
-                                        Localizations.localeOf(
-                                          context,
-                                        ).toLanguageTag(),
+                                        Localizations.localeOf(context)
+                                            .toLanguageTag(),
                                       ).format(date),
                                     ),
                                   ),

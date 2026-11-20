@@ -1,4 +1,5 @@
 import 'package:cinemapedia/domain/entities/tv_show.dart';
+import 'package:cinemapedia/presentation/widgets/series/favorite_series_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,12 +18,26 @@ class SeriesPosterCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Image.network(
-                series.posterPath,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const Center(
-                  child: Icon(Icons.live_tv_outlined, size: 40),
-                ),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  InkWell(
+                    onTap: () => context.push('/series/${series.id}'),
+                    child: Image.network(
+                      series.posterPath,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Center(
+                            child: Icon(Icons.live_tv_outlined, size: 40),
+                          ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: FavoriteSeriesButton(series: series),
+                  ),
+                ],
               ),
             ),
             Padding(

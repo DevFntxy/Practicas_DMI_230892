@@ -15,6 +15,7 @@ export 'movies/similar_movies.dart';
 export 'actors/actors_by_movie.dart';
 export 'videos/videos_from_movie.dart';
 export 'series/series_poster_card.dart';
+export 'series/favorite_series_button.dart';
 export 'series/similar_series.dart';
 export 'actors/actors_by_series.dart';
 export 'shared/catalog_search_button.dart';

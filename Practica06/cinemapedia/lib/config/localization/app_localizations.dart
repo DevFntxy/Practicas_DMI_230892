@@ -182,6 +182,51 @@ class AppLocalizations {
     japanese: 'お気に入り',
     portuguese: 'Favoritos',
   );
+  String get favoriteMovies => _localized(
+    spanish: 'Películas',
+    english: 'Movies',
+    german: 'Filme',
+    korean: '영화',
+    french: 'Films',
+    japanese: '映画',
+    portuguese: 'Filmes',
+  );
+  String get favoriteSeries => _localized(
+    spanish: 'Series',
+    english: 'TV shows',
+    german: 'Serien',
+    korean: '시리즈',
+    french: 'Séries',
+    japanese: 'シリーズ',
+    portuguese: 'Séries',
+  );
+  String get noFavorites => _localized(
+    spanish: 'Aún no tienes favoritos.',
+    english: 'You do not have any favorites yet.',
+    german: 'Du hast noch keine Favoriten.',
+    korean: '아직 즐겨찾기가 없습니다.',
+    french: 'Vous n’avez pas encore de favoris.',
+    japanese: 'お気に入りはまだありません。',
+    portuguese: 'Você ainda não tem favoritos.',
+  );
+  String get addFavorite => _localized(
+    spanish: 'Agregar a favoritos',
+    english: 'Add to favorites',
+    german: 'Zu Favoriten hinzufügen',
+    korean: '즐겨찾기에 추가',
+    french: 'Ajouter aux favoris',
+    japanese: 'お気に入りに追加',
+    portuguese: 'Adicionar aos favoritos',
+  );
+  String get removeFavorite => _localized(
+    spanish: 'Quitar de favoritos',
+    english: 'Remove from favorites',
+    german: 'Aus Favoriten entfernen',
+    korean: '즐겨찾기에서 삭제',
+    french: 'Retirer des favoris',
+    japanese: 'お気に入りから削除',
+    portuguese: 'Remover dos favoritos',
+  );
   String get series => _localized(
     spanish: 'Series',
     english: 'TV Shows',

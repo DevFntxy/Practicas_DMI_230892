@@ -1,11 +1,14 @@
 # Práctica 06 — Cinemapedia
 
-Cinemapedia es una aplicación móvil desarrollada con Flutter para explorar películas. La información de películas y reparto se consulta desde [The Movie Database (TMDB)](https://www.themoviedb.org/).
+Cinemapedia es una aplicación móvil desarrollada con Flutter para explorar películas y series. La información de títulos, reparto y videos se consulta desde [The Movie Database (TMDB)](https://www.themoviedb.org/).
 
 ## Funcionalidades
 
 - Catálogos de películas en cartelera, próximas, populares y mejor valoradas.
 - Búsqueda de películas y vista de detalles con sinopsis, géneros y reparto.
+- Inicio de series con tendencias, títulos populares y series en emisión.
+- Detalles de series con reparto, tráilers y favoritos persistentes.
+- Favoritos de películas y series guardados por separado.
 - Interfaz disponible en español, inglés, alemán, coreano, francés, japonés y portugués.
 - Pantalla de configuración para cambiar el idioma de la aplicación.
 - Navegación con `go_router` y estado administrado con Riverpod.
@@ -59,6 +62,34 @@ La aplicación permite elegir español, inglés, alemán, coreano, francés, jap
 | Cinemapedia instalada | Icono usado para la aplicación |
 |---|---|
 | <img src="assets/caps/appInstalada.png" alt="Cinemapedia instalada en el dispositivo" width="300"> | <img src="assets/fanso-cinemapedia-app-icon.png" alt="Icono de Cinemapedia" width="300"> |
+
+### Categorías y favoritos
+
+| Categorías | Resultados de una categoría |
+|---|---|
+| <img src="assets/caps/pantallaCategoria.png" alt="Listado de categorías" width="300"> | <img src="assets/caps/pantallaCategoria-resultado.png" alt="Películas de una categoría" width="300"> |
+
+| Películas favoritas | Series favoritas |
+|---|---|
+| <img src="assets/caps/pantallaFavoritopelicula.png" alt="Favoritos de películas" width="300"> | <img src="assets/caps/pantallaFavoritoSerie.png" alt="Favoritos de series" width="300"> |
+
+## Reto
+
+### Series
+
+| Inicio de series | Búsqueda |
+|---|---|
+| <img src="assets/caps/reto/pantallaInicioSeries.png" alt="Pantalla de inicio de series" width="300"> | <img src="assets/caps/reto/funcionBusqueda.png" alt="Búsqueda de títulos" width="300"> |
+
+| Resultados de búsqueda | Serie favorita |
+|---|---|
+| <img src="assets/caps/reto/resultadosBusqueda.png" alt="Resultados de búsqueda con series y películas" width="300"> | <img src="assets/caps/reto/serieFavorita.png" alt="Detalle de una serie favorita" width="300"> |
+
+### Películas
+
+| Descripción, reparto y géneros | Tráiler y recomendaciones |
+|---|---|
+| <img src="assets/caps/reto/pantallaPelicula-descripcion-reparto-genero.png" alt="Descripción, reparto y géneros de una película" width="300"> | <img src="assets/caps/reto/pantallaPelicula-trailer-recomendaciones.png" alt="Tráiler y recomendaciones de películas" width="300"> |
 
 ## Requisitos
 

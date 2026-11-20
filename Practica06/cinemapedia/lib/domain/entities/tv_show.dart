@@ -24,7 +24,8 @@ class TvShow {
   });
 
   factory TvShow.fromJson(Map<String, dynamic> json) {
-    final rawGenres = json['genres'] as List? ?? json['genre_ids'] as List? ?? [];
+    final rawGenres =
+        json['genres'] as List? ?? json['genre_ids'] as List? ?? [];
     final rawDate = json['first_air_date'] as String?;
 
     return TvShow(
@@ -34,7 +35,10 @@ class TvShow {
       posterPath: _imageUrl(json['poster_path'] as String?, poster: true),
       backdropPath: _imageUrl(json['backdrop_path'] as String?),
       genres: rawGenres
-          .map((genre) => genre is Map ? genre['name'].toString() : genre.toString())
+          .map(
+            (genre) =>
+                genre is Map ? genre['name'].toString() : genre.toString(),
+          )
           .toList(),
       firstAirDate: rawDate == null || rawDate.isEmpty
           ? null
@@ -43,6 +47,28 @@ class TvShow {
       numberOfSeasons: json['number_of_seasons'] as int? ?? 0,
       numberOfEpisodes: json['number_of_episodes'] as int? ?? 0,
     );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'overview': overview,
+    'poster_path': _imagePath(posterPath),
+    'backdrop_path': _imagePath(backdropPath),
+    'genres': genres,
+    'first_air_date': firstAirDate?.toIso8601String(),
+    'vote_average': voteAverage,
+    'number_of_seasons': numberOfSeasons,
+    'number_of_episodes': numberOfEpisodes,
+  };
+
+  static String? _imagePath(String url) {
+    final uri = Uri.tryParse(url);
+    final segments = uri?.pathSegments;
+    if (uri?.host != 'image.tmdb.org' || segments == null) return null;
+    final sizeIndex = segments.indexOf('w500');
+    if (sizeIndex == -1 || sizeIndex == segments.length - 1) return null;
+    return '/${segments.skip(sizeIndex + 1).join('/')}';
   }
 
   static String _imageUrl(String? path, {bool poster = false}) {

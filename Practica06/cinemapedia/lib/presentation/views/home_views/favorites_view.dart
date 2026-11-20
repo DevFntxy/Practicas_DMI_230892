@@ -1,8 +1,12 @@
+import 'package:cinemapedia/config/localization/app_localizations.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/domain/entities/tv_show.dart';
 import 'package:cinemapedia/presentation/providers/movies/favorite_movies_provider.dart';
+import 'package:cinemapedia/presentation/providers/series/favorite_series_provider.dart';
 import 'package:cinemapedia/presentation/widgets/movies/movie_poster_card.dart';
 import 'package:cinemapedia/presentation/widgets/shared/app_sidebar.dart';
 import 'package:cinemapedia/presentation/widgets/shared/custom_bottom_navigation.dart';
+import 'package:cinemapedia/presentation/widgets/series/series_poster_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,27 +17,42 @@ class FavoritesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favorites = ref.watch(favoriteMoviesProvider);
+    final strings = AppLocalizations.of(context);
 
-    // TODO: idioma
-    return Scaffold(
-      appBar: AppBar(title: const Text('Favoritos')),
-      drawer: const AppSidebar(),
-      bottomNavigationBar: const CustomBottomNavigation(currentIndex: 3),
-      body: favorites.isEmpty
-          ? const _EmptyFavorites()
-          : _FavoritesGrid(favorites: favorites),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(strings.favorites),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: strings.favoriteMovies),
+              Tab(text: strings.favoriteSeries),
+            ],
+          ),
+        ),
+        drawer: const AppSidebar(),
+        bottomNavigationBar: const CustomBottomNavigation(currentIndex: 3),
+        body: TabBarView(
+          children: [
+            _FavoriteMoviesTab(favorites: ref.watch(favoriteMoviesProvider)),
+            _FavoriteSeriesTab(favorites: ref.watch(favoriteSeriesProvider)),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _FavoritesGrid extends StatelessWidget {
+class _FavoriteMoviesTab extends StatelessWidget {
   final List<Movie> favorites;
 
-  const _FavoritesGrid({required this.favorites});
+  const _FavoriteMoviesTab({required this.favorites});
 
   @override
   Widget build(BuildContext context) {
+    if (favorites.isEmpty) return const _EmptyFavorites();
+
     return GridView.builder(
       padding: const EdgeInsets.all(12),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -48,23 +67,44 @@ class _FavoritesGrid extends StatelessWidget {
   }
 }
 
+class _FavoriteSeriesTab extends StatelessWidget {
+  final List<TvShow> favorites;
+
+  const _FavoriteSeriesTab({required this.favorites});
+
+  @override
+  Widget build(BuildContext context) {
+    if (favorites.isEmpty) return const _EmptyFavorites();
+
+    return GridView.builder(
+      padding: const EdgeInsets.all(12),
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 220,
+        childAspectRatio: 0.52,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: favorites.length,
+      itemBuilder: (context, index) =>
+          SeriesPosterCard(series: favorites[index]),
+    );
+  }
+}
+
 class _EmptyFavorites extends StatelessWidget {
   const _EmptyFavorites();
 
   @override
   Widget build(BuildContext context) {
-    // TODO: idioma
-    return const Center(
+    return Center(
       child: Padding(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.favorite_border, size: 48),
-            SizedBox(height: 12),
-            Text('Todavía no tienes películas favoritas.'),
-            SizedBox(height: 4),
-            Text('Agrega películas con el ícono de corazón.'),
+            const Icon(Icons.favorite_border, size: 48),
+            const SizedBox(height: 12),
+            Text(AppLocalizations.of(context).noFavorites),
           ],
         ),
       ),
