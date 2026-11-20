@@ -55,13 +55,7 @@ La aplicación permite elegir español, inglés, alemán, coreano, francés, jap
 
 | Alemán | Coreano |
 |---|---|
-| <img src="assets/caps/pantallaAleman.png" alt="Pantalla de inicio en alemán" width="300"> | <img src="assets/caps/pantallaCoreano.png" alt="Pantalla de inicio en coreano" width="300"> |
-
-### Icono instalado
-
-| Cinemapedia instalada | Icono usado para la aplicación |
-|---|---|
-| <img src="assets/caps/appInstalada.png" alt="Cinemapedia instalada en el dispositivo" width="300"> | <img src="assets/fanso-cinemapedia-app-icon.png" alt="Icono de Cinemapedia" width="300"> |
+| <img src="assets/caps/pantallaAleman.png" alt="Pantalla de inicio en alemán" width="300"> | <img src="assets/caps/pantallaCoreano.png" alt="Pantalla de inicio en coreano" width="300"> | 
 
 ### Categorías y favoritos
 
@@ -81,15 +75,23 @@ La aplicación permite elegir español, inglés, alemán, coreano, francés, jap
 |---|---|
 | <img src="assets/caps/reto/pantallaInicioSeries.png" alt="Pantalla de inicio de series" width="300"> | <img src="assets/caps/reto/funcionBusqueda.png" alt="Búsqueda de títulos" width="300"> |
 
-| Resultados de búsqueda | Serie favorita |
-|---|---|
-| <img src="assets/caps/reto/resultadosBusqueda.png" alt="Resultados de búsqueda con series y películas" width="300"> | <img src="assets/caps/reto/serieFavorita.png" alt="Detalle de una serie favorita" width="300"> |
+| Resultados de búsqueda 
 
-### Películas
+| <img src="assets/caps/reto/resultadosBusqueda.png" alt="Resultados de búsqueda con series y películas" width="300"> | 
 
 | Descripción, reparto y géneros | Tráiler y recomendaciones |
 |---|---|
 | <img src="assets/caps/reto/pantallaPelicula-descripcion-reparto-genero.png" alt="Descripción, reparto y géneros de una película" width="300"> | <img src="assets/caps/reto/pantallaPelicula-trailer-recomendaciones.png" alt="Tráiler y recomendaciones de películas" width="300"> |
+
+### Icono instalado
+
+| Cinemapedia instalada | Icono usado para la aplicación |
+|---|---|
+| <img src="assets/caps/appInstalada.png" alt="Cinemapedia instalada en el dispositivo" width="300"> | <img src="assets/fanso-cinemapedia-app-icon.png" alt="Icono de Cinemapedia" width="300"> |
+
+
+
+
 
 ## Requisitos
 
